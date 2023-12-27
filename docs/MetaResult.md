@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **next_cursor** | **str** | Returned if there are more entities to return. Pass back with the cursor param set to continue paging. | [optional] 
@@ -10,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.meta_result import MetaResult
+from usemotion_api_client.models.meta_result import MetaResult
 
 # TODO update the JSON string below
 json = "{}"

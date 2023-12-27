@@ -3,13 +3,14 @@
 A duration can be one of the following... \"NONE\", \"REMINDER\", or a integer greater than 0
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 
 ## Example
 
 ```python
-from openapi_client.models.task_duration import TaskDuration
+from usemotion_api_client.models.task_duration import TaskDuration
 
 # TODO update the JSON string below
 json = "{}"

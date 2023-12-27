@@ -1,4 +1,4 @@
-# openapi_client.ProjectsApi
+# usemotion_api_client.ProjectsApi
 
 All URIs are relative to *https://api.usemotion.com/v1*
 
@@ -17,17 +17,18 @@ List Projects
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
+
 ```python
 import time
 import os
-import openapi_client
-from openapi_client.models.list_projects import ListProjects
-from openapi_client.rest import ApiException
+import usemotion_api_client
+from usemotion_api_client.models.list_projects import ListProjects
+from usemotion_api_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.usemotion.com/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
+configuration = usemotion_api_client.Configuration(
     host = "https://api.usemotion.com/v1"
 )
 
@@ -43,9 +44,9 @@ configuration.api_key['Motion_API_Key'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['Motion_API_Key'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
+with usemotion_api_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = openapi_client.ProjectsApi(api_client)
+    api_instance = usemotion_api_client.ProjectsApi(api_client)
     workspace_id = 'workspace_id_example' # str | 
     cursor = 'cursor_example' # str | Use if a previous request returned a cursor. Will page through results (optional)
 
@@ -61,6 +62,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -81,6 +83,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -95,17 +98,18 @@ Retrieve Project
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
+
 ```python
 import time
 import os
-import openapi_client
-from openapi_client.models.project import Project
-from openapi_client.rest import ApiException
+import usemotion_api_client
+from usemotion_api_client.models.project import Project
+from usemotion_api_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.usemotion.com/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
+configuration = usemotion_api_client.Configuration(
     host = "https://api.usemotion.com/v1"
 )
 
@@ -121,9 +125,9 @@ configuration.api_key['Motion_API_Key'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['Motion_API_Key'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
+with usemotion_api_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = openapi_client.ProjectsApi(api_client)
+    api_instance = usemotion_api_client.ProjectsApi(api_client)
     project_id = 'project_id_example' # str | 
 
     try:
@@ -138,6 +142,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -157,6 +162,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -171,18 +177,19 @@ Create Project
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
+
 ```python
 import time
 import os
-import openapi_client
-from openapi_client.models.project import Project
-from openapi_client.models.project_post import ProjectPost
-from openapi_client.rest import ApiException
+import usemotion_api_client
+from usemotion_api_client.models.project import Project
+from usemotion_api_client.models.project_post import ProjectPost
+from usemotion_api_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.usemotion.com/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
+configuration = usemotion_api_client.Configuration(
     host = "https://api.usemotion.com/v1"
 )
 
@@ -198,10 +205,10 @@ configuration.api_key['Motion_API_Key'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['Motion_API_Key'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
+with usemotion_api_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = openapi_client.ProjectsApi(api_client)
-    project_post = openapi_client.ProjectPost() # ProjectPost | 
+    api_instance = usemotion_api_client.ProjectsApi(api_client)
+    project_post = usemotion_api_client.ProjectPost() # ProjectPost | 
 
     try:
         # Create Project
@@ -215,6 +222,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -234,6 +242,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** |  |  -  |

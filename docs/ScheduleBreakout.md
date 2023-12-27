@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **monday** | [**List[DailySchedule]**](DailySchedule.md) | Array could be empty if there is no range for this day | 
@@ -15,7 +16,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.schedule_breakout import ScheduleBreakout
+from usemotion_api_client.models.schedule_breakout import ScheduleBreakout
 
 # TODO update the JSON string below
 json = "{}"

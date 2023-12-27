@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **task_id** | **str** |  | 
@@ -10,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.comment_post import CommentPost
+from usemotion_api_client.models.comment_post import CommentPost
 
 # TODO update the JSON string below
 json = "{}"

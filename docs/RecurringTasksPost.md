@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **frequency** | **str** | Frequency in which the task should be scheduled. Please carefully read how to construct above. | 
@@ -19,7 +20,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.recurring_tasks_post import RecurringTasksPost
+from usemotion_api_client.models.recurring_tasks_post import RecurringTasksPost
 
 # TODO update the JSON string below
 json = "{}"

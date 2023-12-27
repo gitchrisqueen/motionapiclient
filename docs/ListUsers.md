@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **users** | [**List[User]**](User.md) |  | 
@@ -10,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.list_users import ListUsers
+from usemotion_api_client.models.list_users import ListUsers
 
 # TODO update the JSON string below
 json = "{}"

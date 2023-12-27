@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **due_date** | **datetime** | ISO 8601 Due date on the task | [optional] 
@@ -15,7 +16,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.project_post import ProjectPost
+from usemotion_api_client.models.project_post import ProjectPost
 
 # TODO update the JSON string below
 json = "{}"

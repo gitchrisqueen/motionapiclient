@@ -1,4 +1,4 @@
-# openapi-client
+# usemotion_api_client
 <!-- theme: warning -->
 
 > ### Rate Limit Information
@@ -29,13 +29,13 @@ Python 3.7+
 If the python package is hosted on a repository, you can install directly using:
 
 ```sh
-pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git
+pip install git+https://github.com/gitchrisqueen/usemotion-api-client.git
 ```
-(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/GIT_USER_ID/GIT_REPO_ID.git`)
+(you may need to run `pip` with root permission: `sudo pip install git+https://github.com/gitchrisqueen/usemotion-api-client.git`)
 
 Then import the package:
 ```python
-import openapi_client
+import usemotion_api_client
 ```
 
 ### Setuptools
@@ -49,7 +49,7 @@ python setup.py install --user
 
 Then import the package:
 ```python
-import openapi_client
+import usemotion_api_client
 ```
 
 ### Tests
@@ -63,13 +63,13 @@ Please follow the [installation procedure](#installation--usage) and then run th
 ```python
 
 import time
-import openapi_client
-from openapi_client.rest import ApiException
+import usemotion_api_client
+from usemotion_api_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.usemotion.com/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
+configuration = usemotion_api_client.Configuration(
     host = "https://api.usemotion.com/v1"
 )
 
@@ -86,9 +86,9 @@ configuration.api_key['Motion_API_Key'] = os.environ["API_KEY"]
 
 
 # Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
+with usemotion_api_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = openapi_client.CommentsApi(api_client)
+    api_instance = usemotion_api_client.CommentsApi(api_client)
     task_id = 'task_id_example' # str | 
     cursor = 'cursor_example' # str | Use if a previous request returned a cursor. Will page through results (optional)
 
@@ -177,6 +177,6 @@ Authentication schemes defined for the API:
 
 ## Author
 
-
+christopher.queen@gmail.com
 
 

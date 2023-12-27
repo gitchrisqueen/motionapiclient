@@ -3,13 +3,14 @@
 A duration can be one of the following... \"REMINDER\", or a integer greater than 0
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 
 ## Example
 
 ```python
-from openapi_client.models.recurring_tasks_post_duration import RecurringTasksPostDuration
+from usemotion_api_client.models.recurring_tasks_post_duration import RecurringTasksPostDuration
 
 # TODO update the JSON string below
 json = "{}"

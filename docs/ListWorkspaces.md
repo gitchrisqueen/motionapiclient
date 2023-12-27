@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **workspaces** | [**List[Workspace]**](Workspace.md) |  | 
@@ -10,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.list_workspaces import ListWorkspaces
+from usemotion_api_client.models.list_workspaces import ListWorkspaces
 
 # TODO update the JSON string below
 json = "{}"

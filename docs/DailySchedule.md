@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **start** | **str** | 24 hour time format. HH:mm | 
@@ -10,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.daily_schedule import DailySchedule
+from usemotion_api_client.models.daily_schedule import DailySchedule
 
 # TODO update the JSON string below
 json = "{}"

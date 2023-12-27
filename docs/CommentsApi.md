@@ -1,4 +1,4 @@
-# openapi_client.CommentsApi
+# usemotion_api_client.CommentsApi
 
 All URIs are relative to *https://api.usemotion.com/v1*
 
@@ -16,17 +16,18 @@ List Comments
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
+
 ```python
 import time
 import os
-import openapi_client
-from openapi_client.models.list_comments import ListComments
-from openapi_client.rest import ApiException
+import usemotion_api_client
+from usemotion_api_client.models.list_comments import ListComments
+from usemotion_api_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.usemotion.com/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
+configuration = usemotion_api_client.Configuration(
     host = "https://api.usemotion.com/v1"
 )
 
@@ -42,9 +43,9 @@ configuration.api_key['Motion_API_Key'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['Motion_API_Key'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
+with usemotion_api_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = openapi_client.CommentsApi(api_client)
+    api_instance = usemotion_api_client.CommentsApi(api_client)
     task_id = 'task_id_example' # str | 
     cursor = 'cursor_example' # str | Use if a previous request returned a cursor. Will page through results (optional)
 
@@ -60,6 +61,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -80,6 +82,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -96,18 +99,19 @@ Create Comment
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
+
 ```python
 import time
 import os
-import openapi_client
-from openapi_client.models.comment import Comment
-from openapi_client.models.comment_post import CommentPost
-from openapi_client.rest import ApiException
+import usemotion_api_client
+from usemotion_api_client.models.comment import Comment
+from usemotion_api_client.models.comment_post import CommentPost
+from usemotion_api_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.usemotion.com/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
+configuration = usemotion_api_client.Configuration(
     host = "https://api.usemotion.com/v1"
 )
 
@@ -123,10 +127,10 @@ configuration.api_key['Motion_API_Key'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['Motion_API_Key'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
+with usemotion_api_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = openapi_client.CommentsApi(api_client)
-    comment_post = openapi_client.CommentPost() # CommentPost | 
+    api_instance = usemotion_api_client.CommentsApi(api_client)
+    comment_post = usemotion_api_client.CommentPost() # CommentPost | 
 
     try:
         # Create Comment
@@ -140,6 +144,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -159,6 +164,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** |  |  -  |

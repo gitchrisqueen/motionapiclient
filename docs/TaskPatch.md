@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **name** | **str** | Name / title of the task | [optional] 
@@ -18,7 +19,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.task_patch import TaskPatch
+from usemotion_api_client.models.task_patch import TaskPatch
 
 # TODO update the JSON string below
 json = "{}"

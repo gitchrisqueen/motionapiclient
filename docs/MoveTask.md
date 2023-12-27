@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **workspace_id** | **str** |  | 
@@ -10,7 +11,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.move_task import MoveTask
+from usemotion_api_client.models.move_task import MoveTask
 
 # TODO update the JSON string below
 json = "{}"

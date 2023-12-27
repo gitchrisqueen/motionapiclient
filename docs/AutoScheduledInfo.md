@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **start_date** | **datetime** | ISO 8601 Date which is trimmed to the start of the day passed | [optional] 
@@ -11,7 +12,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.auto_scheduled_info import AutoScheduledInfo
+from usemotion_api_client.models.auto_scheduled_info import AutoScheduledInfo
 
 # TODO update the JSON string below
 json = "{}"

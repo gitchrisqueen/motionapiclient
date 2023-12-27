@@ -2,6 +2,7 @@
 
 
 ## Properties
+
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **id** | **str** |  | 
@@ -14,7 +15,7 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from openapi_client.models.workspace import Workspace
+from usemotion_api_client.models.workspace import Workspace
 
 # TODO update the JSON string below
 json = "{}"

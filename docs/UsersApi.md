@@ -1,4 +1,4 @@
-# openapi_client.UsersApi
+# usemotion_api_client.UsersApi
 
 All URIs are relative to *https://api.usemotion.com/v1*
 
@@ -16,17 +16,18 @@ List users
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
+
 ```python
 import time
 import os
-import openapi_client
-from openapi_client.models.list_users import ListUsers
-from openapi_client.rest import ApiException
+import usemotion_api_client
+from usemotion_api_client.models.list_users import ListUsers
+from usemotion_api_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.usemotion.com/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
+configuration = usemotion_api_client.Configuration(
     host = "https://api.usemotion.com/v1"
 )
 
@@ -42,9 +43,9 @@ configuration.api_key['Motion_API_Key'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['Motion_API_Key'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
+with usemotion_api_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = openapi_client.UsersApi(api_client)
+    api_instance = usemotion_api_client.UsersApi(api_client)
     cursor = 'cursor_example' # str | Use if a previous request returned a cursor. Will page through results (optional)
     workspace_id = 'workspace_id_example' # str |  (optional)
     team_id = 'team_id_example' # str |  (optional)
@@ -61,6 +62,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
+
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
@@ -82,6 +84,7 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -96,17 +99,18 @@ Get My User
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
+
 ```python
 import time
 import os
-import openapi_client
-from openapi_client.models.user import User
-from openapi_client.rest import ApiException
+import usemotion_api_client
+from usemotion_api_client.models.user import User
+from usemotion_api_client.rest import ApiException
 from pprint import pprint
 
 # Defining the host is optional and defaults to https://api.usemotion.com/v1
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
+configuration = usemotion_api_client.Configuration(
     host = "https://api.usemotion.com/v1"
 )
 
@@ -122,9 +126,9 @@ configuration.api_key['Motion_API_Key'] = os.environ["API_KEY"]
 # configuration.api_key_prefix['Motion_API_Key'] = 'Bearer'
 
 # Enter a context with an instance of the API client
-with openapi_client.ApiClient(configuration) as api_client:
+with usemotion_api_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = openapi_client.UsersApi(api_client)
+    api_instance = usemotion_api_client.UsersApi(api_client)
 
     try:
         # Get My User
@@ -138,6 +142,7 @@ with openapi_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -154,6 +159,7 @@ This endpoint does not need any parameter.
  - **Accept**: application/json
 
 ### HTTP response details
+
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
