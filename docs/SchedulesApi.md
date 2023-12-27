@@ -17,7 +17,6 @@ Get a list of schedules for your user
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -60,7 +59,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
-
 This endpoint does not need any parameter.
 
 ### Return type
@@ -77,7 +75,6 @@ This endpoint does not need any parameter.
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |

@@ -18,64 +18,62 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictBool, StrictStr, field_validator
-from pydantic import Field
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictBool, StrictStr, conlist, validator
 from usemotion_api_client.models.label import Label
 from usemotion_api_client.models.project import Project
 from usemotion_api_client.models.status import Status
 from usemotion_api_client.models.task_duration import TaskDuration
 from usemotion_api_client.models.user import User
 from usemotion_api_client.models.workspace import Workspace
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
 
 
 class Task(BaseModel):
     """
     Task
     """
-
-  # noqa: E501
     duration: Optional[TaskDuration] = None
-    workspace: Workspace
-    id: StrictStr
-    name: StrictStr
+    workspace: Workspace = Field(...)
+    id: StrictStr = Field(...)
+    name: StrictStr = Field(...)
     description: Optional[StrictStr] = None
-    due_date: datetime = Field(alias="dueDate")
-    deadline_type: StrictStr = Field(alias="deadlineType")
-    parent_recurring_task_id: StrictStr = Field(alias="parentRecurringTaskId")
-    completed: StrictBool
-    creator: User
+    due_date: datetime = Field(..., alias="dueDate")
+    deadline_type: StrictStr = Field(..., alias="deadlineType")
+    parent_recurring_task_id: StrictStr = Field(...,
+                                                alias="parentRecurringTaskId")
+    completed: StrictBool = Field(...)
+    creator: User = Field(...)
     project: Optional[Project] = None
-    status: Status
-    priority: StrictStr
-    labels: List[Label]
-    assignees: List[User]
+    status: Status = Field(...)
+    priority: StrictStr = Field(...)
+    labels: conlist(Label) = Field(...)
+    assignees: conlist(User) = Field(...)
     scheduled_start: Optional[datetime] = Field(
-        default=None,
-        description="The time that motion has scheduled this task to start",
-        alias="scheduledStart")
+        None,
+        alias="scheduledStart",
+        description="The time that motion has scheduled this task to start")
     created_time: datetime = Field(
-        description="The time that the task was created", alias="createdTime")
+        ...,
+        alias="createdTime",
+        description="The time that the task was created")
     scheduled_end: Optional[datetime] = Field(
-        default=None,
-        description="The time that motion has scheduled this task to end",
-        alias="scheduledEnd")
+        None,
+        alias="scheduledEnd",
+        description="The time that motion has scheduled this task to end")
     scheduling_issue: StrictBool = Field(
+        ...,
+        alias="schedulingIssue",
         description=
-        "Returns true if Motion was unable to schedule this task. Check Motion directly to address",
-        alias="schedulingIssue")
-    __properties: ClassVar[List[str]] = [
+        "Returns true if Motion was unable to schedule this task. Check Motion directly to address"
+    )
+    __properties = [
         "duration", "workspace", "id", "name", "description", "dueDate",
         "deadlineType", "parentRecurringTaskId", "completed", "creator",
         "project", "status", "priority", "labels", "assignees",
         "scheduledStart", "createdTime", "scheduledEnd", "schedulingIssue"
     ]
 
-    @field_validator('deadline_type')
+    @validator('deadline_type')
     def deadline_type_validate_enum(cls, value):
         """Validates the enum"""
         if value not in ('HARD', 'SOFT', 'NONE'):
@@ -83,7 +81,7 @@ class Task(BaseModel):
                 "must be one of enum values ('HARD', 'SOFT', 'NONE')")
         return value
 
-    @field_validator('priority')
+    @validator('priority')
     def priority_validate_enum(cls, value):
         """Validates the enum"""
         if value not in ('ASAP', 'HIGH', 'MEDIUM', 'LOW'):
@@ -91,41 +89,27 @@ class Task(BaseModel):
                 "must be one of enum values ('ASAP', 'HIGH', 'MEDIUM', 'LOW')")
         return value
 
-    model_config = {
-        "populate_by_name": True,
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> Task:
         """Create an instance of Task from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude={},
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         # override the default output from pydantic by calling `to_dict()` of duration
         if self.duration:
             _dict['duration'] = self.duration.to_dict()
@@ -158,15 +142,15 @@ class Task(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict) -> Self:
+    def from_dict(cls, obj: dict) -> Task:
         """Create an instance of Task from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return Task.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = Task.parse_obj({
             "duration":
             TaskDuration.from_dict(obj.get("duration"))
             if obj.get("duration") is not None else None,
@@ -179,12 +163,12 @@ class Task(BaseModel):
             obj.get("name"),
             "description":
             obj.get("description"),
-            "dueDate":
+            "due_date":
             obj.get("dueDate"),
-            "deadlineType":
+            "deadline_type":
             obj.get("deadlineType")
             if obj.get("deadlineType") is not None else 'SOFT',
-            "parentRecurringTaskId":
+            "parent_recurring_task_id":
             obj.get("parentRecurringTaskId"),
             "completed":
             obj.get("completed"),
@@ -204,13 +188,13 @@ class Task(BaseModel):
             "assignees":
             [User.from_dict(_item) for _item in obj.get("assignees")]
             if obj.get("assignees") is not None else None,
-            "scheduledStart":
+            "scheduled_start":
             obj.get("scheduledStart"),
-            "createdTime":
+            "created_time":
             obj.get("createdTime"),
-            "scheduledEnd":
+            "scheduled_end":
             obj.get("scheduledEnd"),
-            "schedulingIssue":
+            "scheduling_issue":
             obj.get("schedulingIssue")
         })
         return _obj

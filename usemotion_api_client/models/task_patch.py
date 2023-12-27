@@ -18,51 +18,43 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictStr, field_validator
-from pydantic import Field
-from typing_extensions import Annotated
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictStr, conlist, constr, validator
 from usemotion_api_client.models.auto_scheduled_info import AutoScheduledInfo
 from usemotion_api_client.models.task_patch_duration import TaskPatchDuration
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
 
 
 class TaskPatch(BaseModel):
     """
     TaskPatch
     """
-
-  # noqa: E501
-    name: Optional[Annotated[str, Field(min_length=1, strict=True)]] = Field(
-        default=None, description="Name / title of the task")
+    name: Optional[constr(strict=True, min_length=1)] = Field(
+        None, description="Name / title of the task")
     due_date: Optional[datetime] = Field(
-        default=None,
+        None,
+        alias="dueDate",
         description=
-        "ISO 8601 Due date on the task. REQUIRED for scheduled tasks",
-        alias="dueDate")
+        "ISO 8601 Due date on the task. REQUIRED for scheduled tasks")
     duration: Optional[TaskPatchDuration] = None
     status: Optional[StrictStr] = Field(
-        default=None, description="Defaults to workspace default status.")
-    auto_scheduled: Optional[AutoScheduledInfo] = Field(default=None,
+        None, description="Defaults to workspace default status.")
+    auto_scheduled: Optional[AutoScheduledInfo] = Field(None,
                                                         alias="autoScheduled")
-    project_id: Optional[StrictStr] = Field(default=None, alias="projectId")
+    project_id: Optional[StrictStr] = Field(None, alias="projectId")
     description: Optional[StrictStr] = Field(
-        default=None, description="Input as GitHub Flavored Markdown")
+        None, description="Input as GitHub Flavored Markdown")
     priority: Optional[StrictStr] = None
-    labels: Optional[List[StrictStr]] = None
+    labels: Optional[conlist(StrictStr)] = None
     assignee_id: Optional[StrictStr] = Field(
-        default=None,
-        description="The user id the task should be assigned to",
-        alias="assigneeId")
-    __properties: ClassVar[List[str]] = [
+        None,
+        alias="assigneeId",
+        description="The user id the task should be assigned to")
+    __properties = [
         "name", "dueDate", "duration", "status", "autoScheduled", "projectId",
         "description", "priority", "labels", "assigneeId"
     ]
 
-    @field_validator('priority')
+    @validator('priority')
     def priority_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
@@ -73,41 +65,27 @@ class TaskPatch(BaseModel):
                 "must be one of enum values ('ASAP', 'HIGH', 'MEDIUM', 'LOW')")
         return value
 
-    model_config = {
-        "populate_by_name": True,
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> TaskPatch:
         """Create an instance of TaskPatch from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude={},
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         # override the default output from pydantic by calling `to_dict()` of duration
         if self.duration:
             _dict['duration'] = self.duration.to_dict()
@@ -117,28 +95,28 @@ class TaskPatch(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict) -> Self:
+    def from_dict(cls, obj: dict) -> TaskPatch:
         """Create an instance of TaskPatch from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return TaskPatch.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = TaskPatch.parse_obj({
             "name":
             obj.get("name"),
-            "dueDate":
+            "due_date":
             obj.get("dueDate"),
             "duration":
             TaskPatchDuration.from_dict(obj.get("duration"))
             if obj.get("duration") is not None else None,
             "status":
             obj.get("status"),
-            "autoScheduled":
+            "auto_scheduled":
             AutoScheduledInfo.from_dict(obj.get("autoScheduled"))
             if obj.get("autoScheduled") is not None else None,
-            "projectId":
+            "project_id":
             obj.get("projectId"),
             "description":
             obj.get("description"),
@@ -146,7 +124,7 @@ class TaskPatch(BaseModel):
             obj.get("priority"),
             "labels":
             obj.get("labels"),
-            "assigneeId":
+            "assignee_id":
             obj.get("assigneeId")
         })
         return _obj

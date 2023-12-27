@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **monday** | [**List[DailySchedule]**](DailySchedule.md) | Array could be empty if there is no range for this day | 

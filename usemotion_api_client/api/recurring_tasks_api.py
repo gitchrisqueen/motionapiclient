@@ -12,20 +12,14 @@
     Do not edit the class manually.
 """  # noqa: E501
 
+import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
-from typing import Dict, List, Optional, Tuple, Union, Any
+from pydantic import validate_arguments, ValidationError
 
-try:
-    from typing import Annotated
-except ImportError:
-    from typing_extensions import Annotated
-
-from pydantic import Field
 from typing_extensions import Annotated
-from pydantic import StrictStr
+from pydantic import Field, StrictStr
 
 from typing import Optional
 
@@ -35,7 +29,8 @@ from usemotion_api_client.models.recurring_tasks_post import RecurringTasksPost
 
 from usemotion_api_client.api_client import ApiClient
 from usemotion_api_client.api_response import ApiResponse
-from usemotion_api_client.rest import RESTResponseType
+from usemotion_api_client.exceptions import (  # noqa: F401
+    ApiTypeError, ApiValueError)
 
 
 class RecurringTasksApi:
@@ -50,726 +45,442 @@ class RecurringTasksApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-    @validate_call
-    def recurring_tasks_controller_delete_task(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
-        """Delete a Recurring Task
+    @validate_arguments
+    def recurring_tasks_controller_delete_task(self, task_id: StrictStr,
+                                               **kwargs) -> None:  # noqa: E501
+        """Delete a Recurring Task  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.recurring_tasks_controller_delete_task(task_id, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: None
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the recurring_tasks_controller_delete_task_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.recurring_tasks_controller_delete_task_with_http_info(
+            task_id, **kwargs)  # noqa: E501
 
-        _param = self._recurring_tasks_controller_delete_task_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def recurring_tasks_controller_delete_task_with_http_info(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
-        """Delete a Recurring Task
+            self, task_id: StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+        """Delete a Recurring Task  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.recurring_tasks_controller_delete_task_with_http_info(task_id, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: None
+        """
 
-        _param = self._recurring_tasks_controller_delete_task_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['task_id']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def recurring_tasks_controller_delete_task_without_preload_content(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Delete a Recurring Task
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method recurring_tasks_controller_delete_task" % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param task_id: (required)
-        :type task_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._recurring_tasks_controller_delete_task_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _recurring_tasks_controller_delete_task_serialize(
-        self,
-        task_id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if task_id is not None:
-            _path_params['taskId'] = task_id
+        _path_params = {}
+        if _params['task_id'] is not None:
+            _path_params['taskId'] = _params['task_id']
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
+        _body_params = None
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='DELETE',
-            resource_path='/recurring-tasks/{taskId}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {}
+
+        return self.api_client.call_api(
+            '/recurring-tasks/{taskId}',
+            'DELETE',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
+    @validate_arguments
     def recurring_tasks_controller_list_recurring_tasks(
-        self,
-        workspace_id: Annotated[
-            StrictStr,
-            Field(description="The id of the workspace you want tasks from.")],
-        cursor: Annotated[
+            self,
+            workspace_id: Annotated[
+                StrictStr,
+                Field(
+                    ...,
+                    description="The id of the workspace you want tasks from."
+                )],
+            cursor:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Use if a previous request returned a cursor. Will page through results"
             )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ListRecurringTasks:
-        """List Recurring Tasks
+            **kwargs) -> ListRecurringTasks:  # noqa: E501
+        """List Recurring Tasks  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.recurring_tasks_controller_list_recurring_tasks(workspace_id, cursor, async_req=True)
+        >>> result = thread.get()
 
         :param workspace_id: The id of the workspace you want tasks from. (required)
         :type workspace_id: str
         :param cursor: Use if a previous request returned a cursor. Will page through results
         :type cursor: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: ListRecurringTasks
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the recurring_tasks_controller_list_recurring_tasks_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.recurring_tasks_controller_list_recurring_tasks_with_http_info(
+            workspace_id, cursor, **kwargs)  # noqa: E501
 
-        _param = self._recurring_tasks_controller_list_recurring_tasks_serialize(
-            workspace_id=workspace_id,
-            cursor=cursor,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListRecurringTasks",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def recurring_tasks_controller_list_recurring_tasks_with_http_info(
-        self,
-        workspace_id: Annotated[
-            StrictStr,
-            Field(description="The id of the workspace you want tasks from.")],
-        cursor: Annotated[
+            self,
+            workspace_id: Annotated[
+                StrictStr,
+                Field(
+                    ...,
+                    description="The id of the workspace you want tasks from."
+                )],
+            cursor:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Use if a previous request returned a cursor. Will page through results"
             )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ListRecurringTasks]:
-        """List Recurring Tasks
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """List Recurring Tasks  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.recurring_tasks_controller_list_recurring_tasks_with_http_info(workspace_id, cursor, async_req=True)
+        >>> result = thread.get()
 
         :param workspace_id: The id of the workspace you want tasks from. (required)
         :type workspace_id: str
         :param cursor: Use if a previous request returned a cursor. Will page through results
         :type cursor: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(ListRecurringTasks, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._recurring_tasks_controller_list_recurring_tasks_serialize(
-            workspace_id=workspace_id,
-            cursor=cursor,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListRecurringTasks",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['workspace_id', 'cursor']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def recurring_tasks_controller_list_recurring_tasks_without_preload_content(
-        self,
-        workspace_id: Annotated[
-            StrictStr,
-            Field(description="The id of the workspace you want tasks from.")],
-        cursor: Annotated[
-            Optional[StrictStr],
-            Field(
-                description=
-                "Use if a previous request returned a cursor. Will page through results"
-            )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """List Recurring Tasks
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method recurring_tasks_controller_list_recurring_tasks"
+                    % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param workspace_id: The id of the workspace you want tasks from. (required)
-        :type workspace_id: str
-        :param cursor: Use if a previous request returned a cursor. Will page through results
-        :type cursor: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._recurring_tasks_controller_list_recurring_tasks_serialize(
-            workspace_id=workspace_id,
-            cursor=cursor,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListRecurringTasks",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _recurring_tasks_controller_list_recurring_tasks_serialize(
-        self,
-        workspace_id,
-        cursor,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
+        _path_params = {}
+
         # process the query parameters
-        if cursor is not None:
+        _query_params = []
+        if _params.get('cursor') is not None:  # noqa: E501
+            _query_params.append(('cursor', _params['cursor']))
 
-            _query_params.append(('cursor', cursor))
-
-        if workspace_id is not None:
-
-            _query_params.append(('workspaceId', workspace_id))
+        if _params.get('workspace_id') is not None:  # noqa: E501
+            _query_params.append(('workspaceId', _params['workspace_id']))
 
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
+        _body_params = None
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/recurring-tasks',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "ListRecurringTasks",
+        }
+
+        return self.api_client.call_api(
+            '/recurring-tasks',
+            'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
+    @validate_arguments
     def recurring_tasks_controller_post_recurring_task(
-        self,
-        recurring_tasks_post: RecurringTasksPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RecurringTask:
-        """Create a Recurring Task
+            self, recurring_tasks_post: RecurringTasksPost,
+            **kwargs) -> RecurringTask:  # noqa: E501
+        """Create a Recurring Task  # noqa: E501
 
-        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).  # Defining Frequencies  In order to give our API all the power that motion has to offer, we allow calls to create recurring tasks in the same way you can through the UI.  ## Defining specific days for a frequency  <!-- theme: warning -->  > ### Note > > Defining days should always be used along with a specific frequency type as defined below. > A array of days should never be used on its own. See examples below.  When picking a set of specific week days, we expect it to be defined as an array with a subset of the following values.  - MO - Monday - TU - Tuesday - WE - Wednesday - TH - Thursday - FR - Friday - SA - Saturday - SU - Sunday  Example - `[MO, FR, SU]` would mean Monday, Friday and Sunday.  ## Defining a daily frequency  - `daily_every_day` - `daily_every_week_day` - `daily_specific_days_$DAYS_ARRAY$`   - Ex: `daily_specific_days_[MO, TU, FR]`  ## Defining a weekly frequency  - `weekly_any_day` - `weekly_any_week_day` - `weekly_specific_days_$DAYS_ARRAY$`   - Ex: `weekly_specific_days_[MO, TU, FR]`  ## Defining a bi-weekly frequency  - `biweekly_first_week_specific_days_$DAYS_ARRAY$`   - Ex: `biweekly_first_week_specific_days_[MO, TU, FR]` - `biweekly_first_week_any_day` - `biweekly_first_week_any_week_day` - `biweekly_second_week_any_day` - `biweekly_second_week_any_week_day`  ## Defining a monthly frequency  ### Specific Week Day Options  When choosing the 1st, 2nd, 3rd, 4th or last day of the week for the month, it takes the form of any of the following where $DAY$ can be substituted for the day code mentioned above.  - `monthly_first_$DAY$` - `monthly_second_$DAY$` - `monthly_third_$DAY$` - `monthly_fourth_$DAY$` - `monthly_last_$DAY$`  **Example** `monthly_first_MO`  ### Specific Day Options  When choosing a specific day of the month, for example the 6th, it would be defined with just the number like below.  Examples:  - `monthly_1` - `monthly_15` - `monthly_31`  In the case you choose a numeric value for a month that does not have that many days, we will default to the last day of the month.  ### Specific Week Options  **Any Day**  - `monthly_any_day_first_week` - `monthly_any_day_second_week` - `monthly_any_day_third_week` - `monthly_any_day_fourth_week` - `monthly_any_day_last_week`  **Any Week Day**  - `monthly_any_week_day_first_week` - `monthly_any_week_day_second_week` - `monthly_any_week_day_third_week` - `monthly_any_week_day_fourth_week` - `monthly_any_week_day_last_week`  ### Other Options  - `monthly_last_day_of_month` - `monthly_any_week_day_of_month` - `monthly_any_day_of_month`  ## Defining a quarterly frequency  ### First Days  - `quarterly_first_day` - `quarterly_first_week_day` - `quarterly_first_$DAY$`   - Ex. `quarterly_first_MO`  ### Last Days  - `quarterly_last_day` - `quarterly_last_week_day` - `quarterly_last_$DAY$`   - Ex. `quarterly_last_MO`  ### Other Options  - `quarterly_any_day_first_week` - `quarterly_any_day_second_week` - `quarterly_any_day_last_week` - `quarterly_any_day_first_month` - `quarterly_any_day_second_month` - `quarterly_any_day_third_month` 
+        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).  # Defining Frequencies  In order to give our API all the power that motion has to offer, we allow calls to create recurring tasks in the same way you can through the UI.  ## Defining specific days for a frequency  <!-- theme: warning -->  > ### Note > > Defining days should always be used along with a specific frequency type as defined below. > A array of days should never be used on its own. See examples below.  When picking a set of specific week days, we expect it to be defined as an array with a subset of the following values.  - MO - Monday - TU - Tuesday - WE - Wednesday - TH - Thursday - FR - Friday - SA - Saturday - SU - Sunday  Example - `[MO, FR, SU]` would mean Monday, Friday and Sunday.  ## Defining a daily frequency  - `daily_every_day` - `daily_every_week_day` - `daily_specific_days_$DAYS_ARRAY$`   - Ex: `daily_specific_days_[MO, TU, FR]`  ## Defining a weekly frequency  - `weekly_any_day` - `weekly_any_week_day` - `weekly_specific_days_$DAYS_ARRAY$`   - Ex: `weekly_specific_days_[MO, TU, FR]`  ## Defining a bi-weekly frequency  - `biweekly_first_week_specific_days_$DAYS_ARRAY$`   - Ex: `biweekly_first_week_specific_days_[MO, TU, FR]` - `biweekly_first_week_any_day` - `biweekly_first_week_any_week_day` - `biweekly_second_week_any_day` - `biweekly_second_week_any_week_day`  ## Defining a monthly frequency  ### Specific Week Day Options  When choosing the 1st, 2nd, 3rd, 4th or last day of the week for the month, it takes the form of any of the following where $DAY$ can be substituted for the day code mentioned above.  - `monthly_first_$DAY$` - `monthly_second_$DAY$` - `monthly_third_$DAY$` - `monthly_fourth_$DAY$` - `monthly_last_$DAY$`  **Example** `monthly_first_MO`  ### Specific Day Options  When choosing a specific day of the month, for example the 6th, it would be defined with just the number like below.  Examples:  - `monthly_1` - `monthly_15` - `monthly_31`  In the case you choose a numeric value for a month that does not have that many days, we will default to the last day of the month.  ### Specific Week Options  **Any Day**  - `monthly_any_day_first_week` - `monthly_any_day_second_week` - `monthly_any_day_third_week` - `monthly_any_day_fourth_week` - `monthly_any_day_last_week`  **Any Week Day**  - `monthly_any_week_day_first_week` - `monthly_any_week_day_second_week` - `monthly_any_week_day_third_week` - `monthly_any_week_day_fourth_week` - `monthly_any_week_day_last_week`  ### Other Options  - `monthly_last_day_of_month` - `monthly_any_week_day_of_month` - `monthly_any_day_of_month`  ## Defining a quarterly frequency  ### First Days  - `quarterly_first_day` - `quarterly_first_week_day` - `quarterly_first_$DAY$`   - Ex. `quarterly_first_MO`  ### Last Days  - `quarterly_last_day` - `quarterly_last_week_day` - `quarterly_last_$DAY$`   - Ex. `quarterly_last_MO`  ### Other Options  - `quarterly_any_day_first_week` - `quarterly_any_day_second_week` - `quarterly_any_day_last_week` - `quarterly_any_day_first_month` - `quarterly_any_day_second_month` - `quarterly_any_day_third_month`   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.recurring_tasks_controller_post_recurring_task(recurring_tasks_post, async_req=True)
+        >>> result = thread.get()
 
         :param recurring_tasks_post: (required)
         :type recurring_tasks_post: RecurringTasksPost
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: RecurringTask
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the recurring_tasks_controller_post_recurring_task_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.recurring_tasks_controller_post_recurring_task_with_http_info(
+            recurring_tasks_post, **kwargs)  # noqa: E501
 
-        _param = self._recurring_tasks_controller_post_recurring_task_serialize(
-            recurring_tasks_post=recurring_tasks_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RecurringTask",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def recurring_tasks_controller_post_recurring_task_with_http_info(
-        self,
-        recurring_tasks_post: RecurringTasksPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[RecurringTask]:
-        """Create a Recurring Task
+            self, recurring_tasks_post: RecurringTasksPost,
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """Create a Recurring Task  # noqa: E501
 
-        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).  # Defining Frequencies  In order to give our API all the power that motion has to offer, we allow calls to create recurring tasks in the same way you can through the UI.  ## Defining specific days for a frequency  <!-- theme: warning -->  > ### Note > > Defining days should always be used along with a specific frequency type as defined below. > A array of days should never be used on its own. See examples below.  When picking a set of specific week days, we expect it to be defined as an array with a subset of the following values.  - MO - Monday - TU - Tuesday - WE - Wednesday - TH - Thursday - FR - Friday - SA - Saturday - SU - Sunday  Example - `[MO, FR, SU]` would mean Monday, Friday and Sunday.  ## Defining a daily frequency  - `daily_every_day` - `daily_every_week_day` - `daily_specific_days_$DAYS_ARRAY$`   - Ex: `daily_specific_days_[MO, TU, FR]`  ## Defining a weekly frequency  - `weekly_any_day` - `weekly_any_week_day` - `weekly_specific_days_$DAYS_ARRAY$`   - Ex: `weekly_specific_days_[MO, TU, FR]`  ## Defining a bi-weekly frequency  - `biweekly_first_week_specific_days_$DAYS_ARRAY$`   - Ex: `biweekly_first_week_specific_days_[MO, TU, FR]` - `biweekly_first_week_any_day` - `biweekly_first_week_any_week_day` - `biweekly_second_week_any_day` - `biweekly_second_week_any_week_day`  ## Defining a monthly frequency  ### Specific Week Day Options  When choosing the 1st, 2nd, 3rd, 4th or last day of the week for the month, it takes the form of any of the following where $DAY$ can be substituted for the day code mentioned above.  - `monthly_first_$DAY$` - `monthly_second_$DAY$` - `monthly_third_$DAY$` - `monthly_fourth_$DAY$` - `monthly_last_$DAY$`  **Example** `monthly_first_MO`  ### Specific Day Options  When choosing a specific day of the month, for example the 6th, it would be defined with just the number like below.  Examples:  - `monthly_1` - `monthly_15` - `monthly_31`  In the case you choose a numeric value for a month that does not have that many days, we will default to the last day of the month.  ### Specific Week Options  **Any Day**  - `monthly_any_day_first_week` - `monthly_any_day_second_week` - `monthly_any_day_third_week` - `monthly_any_day_fourth_week` - `monthly_any_day_last_week`  **Any Week Day**  - `monthly_any_week_day_first_week` - `monthly_any_week_day_second_week` - `monthly_any_week_day_third_week` - `monthly_any_week_day_fourth_week` - `monthly_any_week_day_last_week`  ### Other Options  - `monthly_last_day_of_month` - `monthly_any_week_day_of_month` - `monthly_any_day_of_month`  ## Defining a quarterly frequency  ### First Days  - `quarterly_first_day` - `quarterly_first_week_day` - `quarterly_first_$DAY$`   - Ex. `quarterly_first_MO`  ### Last Days  - `quarterly_last_day` - `quarterly_last_week_day` - `quarterly_last_$DAY$`   - Ex. `quarterly_last_MO`  ### Other Options  - `quarterly_any_day_first_week` - `quarterly_any_day_second_week` - `quarterly_any_day_last_week` - `quarterly_any_day_first_month` - `quarterly_any_day_second_month` - `quarterly_any_day_third_month` 
+        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).  # Defining Frequencies  In order to give our API all the power that motion has to offer, we allow calls to create recurring tasks in the same way you can through the UI.  ## Defining specific days for a frequency  <!-- theme: warning -->  > ### Note > > Defining days should always be used along with a specific frequency type as defined below. > A array of days should never be used on its own. See examples below.  When picking a set of specific week days, we expect it to be defined as an array with a subset of the following values.  - MO - Monday - TU - Tuesday - WE - Wednesday - TH - Thursday - FR - Friday - SA - Saturday - SU - Sunday  Example - `[MO, FR, SU]` would mean Monday, Friday and Sunday.  ## Defining a daily frequency  - `daily_every_day` - `daily_every_week_day` - `daily_specific_days_$DAYS_ARRAY$`   - Ex: `daily_specific_days_[MO, TU, FR]`  ## Defining a weekly frequency  - `weekly_any_day` - `weekly_any_week_day` - `weekly_specific_days_$DAYS_ARRAY$`   - Ex: `weekly_specific_days_[MO, TU, FR]`  ## Defining a bi-weekly frequency  - `biweekly_first_week_specific_days_$DAYS_ARRAY$`   - Ex: `biweekly_first_week_specific_days_[MO, TU, FR]` - `biweekly_first_week_any_day` - `biweekly_first_week_any_week_day` - `biweekly_second_week_any_day` - `biweekly_second_week_any_week_day`  ## Defining a monthly frequency  ### Specific Week Day Options  When choosing the 1st, 2nd, 3rd, 4th or last day of the week for the month, it takes the form of any of the following where $DAY$ can be substituted for the day code mentioned above.  - `monthly_first_$DAY$` - `monthly_second_$DAY$` - `monthly_third_$DAY$` - `monthly_fourth_$DAY$` - `monthly_last_$DAY$`  **Example** `monthly_first_MO`  ### Specific Day Options  When choosing a specific day of the month, for example the 6th, it would be defined with just the number like below.  Examples:  - `monthly_1` - `monthly_15` - `monthly_31`  In the case you choose a numeric value for a month that does not have that many days, we will default to the last day of the month.  ### Specific Week Options  **Any Day**  - `monthly_any_day_first_week` - `monthly_any_day_second_week` - `monthly_any_day_third_week` - `monthly_any_day_fourth_week` - `monthly_any_day_last_week`  **Any Week Day**  - `monthly_any_week_day_first_week` - `monthly_any_week_day_second_week` - `monthly_any_week_day_third_week` - `monthly_any_week_day_fourth_week` - `monthly_any_week_day_last_week`  ### Other Options  - `monthly_last_day_of_month` - `monthly_any_week_day_of_month` - `monthly_any_day_of_month`  ## Defining a quarterly frequency  ### First Days  - `quarterly_first_day` - `quarterly_first_week_day` - `quarterly_first_$DAY$`   - Ex. `quarterly_first_MO`  ### Last Days  - `quarterly_last_day` - `quarterly_last_week_day` - `quarterly_last_$DAY$`   - Ex. `quarterly_last_MO`  ### Other Options  - `quarterly_any_day_first_week` - `quarterly_any_day_second_week` - `quarterly_any_day_last_week` - `quarterly_any_day_first_month` - `quarterly_any_day_second_month` - `quarterly_any_day_third_month`   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.recurring_tasks_controller_post_recurring_task_with_http_info(recurring_tasks_post, async_req=True)
+        >>> result = thread.get()
 
         :param recurring_tasks_post: (required)
         :type recurring_tasks_post: RecurringTasksPost
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(RecurringTask, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._recurring_tasks_controller_post_recurring_task_serialize(
-            recurring_tasks_post=recurring_tasks_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RecurringTask",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['recurring_tasks_post']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def recurring_tasks_controller_post_recurring_task_without_preload_content(
-        self,
-        recurring_tasks_post: RecurringTasksPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Create a Recurring Task
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method recurring_tasks_controller_post_recurring_task"
+                    % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).  # Defining Frequencies  In order to give our API all the power that motion has to offer, we allow calls to create recurring tasks in the same way you can through the UI.  ## Defining specific days for a frequency  <!-- theme: warning -->  > ### Note > > Defining days should always be used along with a specific frequency type as defined below. > A array of days should never be used on its own. See examples below.  When picking a set of specific week days, we expect it to be defined as an array with a subset of the following values.  - MO - Monday - TU - Tuesday - WE - Wednesday - TH - Thursday - FR - Friday - SA - Saturday - SU - Sunday  Example - `[MO, FR, SU]` would mean Monday, Friday and Sunday.  ## Defining a daily frequency  - `daily_every_day` - `daily_every_week_day` - `daily_specific_days_$DAYS_ARRAY$`   - Ex: `daily_specific_days_[MO, TU, FR]`  ## Defining a weekly frequency  - `weekly_any_day` - `weekly_any_week_day` - `weekly_specific_days_$DAYS_ARRAY$`   - Ex: `weekly_specific_days_[MO, TU, FR]`  ## Defining a bi-weekly frequency  - `biweekly_first_week_specific_days_$DAYS_ARRAY$`   - Ex: `biweekly_first_week_specific_days_[MO, TU, FR]` - `biweekly_first_week_any_day` - `biweekly_first_week_any_week_day` - `biweekly_second_week_any_day` - `biweekly_second_week_any_week_day`  ## Defining a monthly frequency  ### Specific Week Day Options  When choosing the 1st, 2nd, 3rd, 4th or last day of the week for the month, it takes the form of any of the following where $DAY$ can be substituted for the day code mentioned above.  - `monthly_first_$DAY$` - `monthly_second_$DAY$` - `monthly_third_$DAY$` - `monthly_fourth_$DAY$` - `monthly_last_$DAY$`  **Example** `monthly_first_MO`  ### Specific Day Options  When choosing a specific day of the month, for example the 6th, it would be defined with just the number like below.  Examples:  - `monthly_1` - `monthly_15` - `monthly_31`  In the case you choose a numeric value for a month that does not have that many days, we will default to the last day of the month.  ### Specific Week Options  **Any Day**  - `monthly_any_day_first_week` - `monthly_any_day_second_week` - `monthly_any_day_third_week` - `monthly_any_day_fourth_week` - `monthly_any_day_last_week`  **Any Week Day**  - `monthly_any_week_day_first_week` - `monthly_any_week_day_second_week` - `monthly_any_week_day_third_week` - `monthly_any_week_day_fourth_week` - `monthly_any_week_day_last_week`  ### Other Options  - `monthly_last_day_of_month` - `monthly_any_week_day_of_month` - `monthly_any_day_of_month`  ## Defining a quarterly frequency  ### First Days  - `quarterly_first_day` - `quarterly_first_week_day` - `quarterly_first_$DAY$`   - Ex. `quarterly_first_MO`  ### Last Days  - `quarterly_last_day` - `quarterly_last_week_day` - `quarterly_last_$DAY$`   - Ex. `quarterly_last_MO`  ### Other Options  - `quarterly_any_day_first_week` - `quarterly_any_day_second_week` - `quarterly_any_day_last_week` - `quarterly_any_day_first_month` - `quarterly_any_day_second_month` - `quarterly_any_day_third_month` 
-
-        :param recurring_tasks_post: (required)
-        :type recurring_tasks_post: RecurringTasksPost
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._recurring_tasks_controller_post_recurring_task_serialize(
-            recurring_tasks_post=recurring_tasks_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "RecurringTask",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _recurring_tasks_controller_post_recurring_task_serialize(
-        self,
-        recurring_tasks_post,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
+        _path_params = {}
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-        if recurring_tasks_post is not None:
-            _body_params = recurring_tasks_post
+        _body_params = None
+        if _params['recurring_tasks_post'] is not None:
+            _body_params = _params['recurring_tasks_post']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    ['application/json']))
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+        _content_types_list = _params.get(
+            '_content_type',
+            self.api_client.select_header_content_type(['application/json']))
+        if _content_types_list:
+            _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/recurring-tasks',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '201': "RecurringTask",
+        }
+
+        return self.api_client.call_api(
+            '/recurring-tasks',
+            'POST',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))

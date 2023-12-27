@@ -16,7 +16,6 @@ List users
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -63,7 +62,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **cursor** | **str**| Use if a previous request returned a cursor. Will page through results | [optional] 
@@ -84,7 +82,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -99,7 +96,6 @@ Get My User
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -142,7 +138,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 
 ### Parameters
-
 This endpoint does not need any parameter.
 
 ### Return type
@@ -159,7 +154,6 @@ This endpoint does not need any parameter.
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |

@@ -17,7 +17,6 @@ Delete a Recurring Task
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -59,7 +58,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **task_id** | **str**|  | 
@@ -78,7 +76,6 @@ void (empty response body)
  - **Accept**: Not defined
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **204** |  |  -  |
@@ -93,7 +90,6 @@ List Recurring Tasks
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -139,7 +135,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **workspace_id** | **str**| The id of the workspace you want tasks from. | 
@@ -159,7 +154,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -176,7 +170,6 @@ Create a Recurring Task
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -222,7 +215,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **recurring_tasks_post** | [**RecurringTasksPost**](RecurringTasksPost.md)|  | 
@@ -241,7 +233,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** |  |  -  |

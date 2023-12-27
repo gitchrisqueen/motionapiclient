@@ -18,38 +18,28 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictStr, field_validator
-from pydantic import Field
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
+from typing import Optional
+from pydantic import BaseModel, Field, StrictStr, validator
 
 
 class AutoScheduledInfo(BaseModel):
     """
     AutoScheduledInfo
     """
-
-  # noqa: E501
     start_date: Optional[datetime] = Field(
-        default=None,
+        None,
+        alias="startDate",
         description=
-        "ISO 8601 Date which is trimmed to the start of the day passed",
-        alias="startDate")
-    deadline_type: Optional[StrictStr] = Field(default='SOFT',
-                                               alias="deadlineType")
+        "ISO 8601 Date which is trimmed to the start of the day passed")
+    deadline_type: Optional[StrictStr] = Field('SOFT', alias="deadlineType")
     schedule: Optional[StrictStr] = Field(
-        default='Work Hours',
+        'Work Hours',
         description=
         "Schedule the task must adhere to. Schedule MUST be 'Work Hours' if scheduling the task for another user."
     )
-    __properties: ClassVar[List[str]] = [
-        "startDate", "deadlineType", "schedule"
-    ]
+    __properties = ["startDate", "deadlineType", "schedule"]
 
-    @field_validator('deadline_type')
+    @validator('deadline_type')
     def deadline_type_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
@@ -60,56 +50,42 @@ class AutoScheduledInfo(BaseModel):
                 "must be one of enum values ('HARD', 'SOFT', 'NONE')")
         return value
 
-    model_config = {
-        "populate_by_name": True,
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> AutoScheduledInfo:
         """Create an instance of AutoScheduledInfo from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude={},
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict) -> Self:
+    def from_dict(cls, obj: dict) -> AutoScheduledInfo:
         """Create an instance of AutoScheduledInfo from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return AutoScheduledInfo.parse_obj(obj)
 
-        _obj = cls.model_validate({
-            "startDate":
+        _obj = AutoScheduledInfo.parse_obj({
+            "start_date":
             obj.get("startDate"),
-            "deadlineType":
+            "deadline_type":
             obj.get("deadlineType")
             if obj.get("deadlineType") is not None else 'SOFT',
             "schedule":

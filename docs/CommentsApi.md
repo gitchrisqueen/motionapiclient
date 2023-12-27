@@ -16,7 +16,6 @@ List Comments
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -62,7 +61,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **task_id** | **str**|  | 
@@ -82,7 +80,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -99,7 +96,6 @@ Create Comment
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -145,7 +141,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **comment_post** | [**CommentPost**](CommentPost.md)|  | 
@@ -164,7 +159,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** |  |  -  |

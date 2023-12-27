@@ -12,20 +12,14 @@
     Do not edit the class manually.
 """  # noqa: E501
 
+import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
-from typing import Dict, List, Optional, Tuple, Union, Any
+from pydantic import validate_arguments, ValidationError
 
-try:
-    from typing import Annotated
-except ImportError:
-    from typing_extensions import Annotated
-
-from pydantic import Field
 from typing_extensions import Annotated
-from pydantic import StrictStr
+from pydantic import Field, StrictStr
 
 from typing import Optional
 
@@ -37,7 +31,8 @@ from usemotion_api_client.models.task_post import TaskPost
 
 from usemotion_api_client.api_client import ApiClient
 from usemotion_api_client.api_response import ApiResponse
-from usemotion_api_client.rest import RESTResponseType
+from usemotion_api_client.exceptions import (  # noqa: F401
+    ApiTypeError, ApiValueError)
 
 
 class TasksApi:
@@ -52,502 +47,310 @@ class TasksApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-    @validate_call
-    def tasks_controller_delete_assignee(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
-        """Unassign a task
+    @validate_arguments
+    def tasks_controller_delete_assignee(self, task_id: StrictStr,
+                                         **kwargs) -> None:  # noqa: E501
+        """Unassign a task  # noqa: E501
 
-        <!-- theme: warning -->  > ### Note > > For simplicity, use this endpoint to unassign a task > instead of the generic update task endpoint. > This also prevents bugs and accidental unassignments. 
+        <!-- theme: warning -->  > ### Note > > For simplicity, use this endpoint to unassign a task > instead of the generic update task endpoint. > This also prevents bugs and accidental unassignments.   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_delete_assignee(task_id, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: None
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the tasks_controller_delete_assignee_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.tasks_controller_delete_assignee_with_http_info(
+            task_id, **kwargs)  # noqa: E501
 
-        _param = self._tasks_controller_delete_assignee_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def tasks_controller_delete_assignee_with_http_info(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
-        """Unassign a task
+            self, task_id: StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+        """Unassign a task  # noqa: E501
 
-        <!-- theme: warning -->  > ### Note > > For simplicity, use this endpoint to unassign a task > instead of the generic update task endpoint. > This also prevents bugs and accidental unassignments. 
+        <!-- theme: warning -->  > ### Note > > For simplicity, use this endpoint to unassign a task > instead of the generic update task endpoint. > This also prevents bugs and accidental unassignments.   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_delete_assignee_with_http_info(task_id, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: None
+        """
 
-        _param = self._tasks_controller_delete_assignee_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['task_id']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def tasks_controller_delete_assignee_without_preload_content(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Unassign a task
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method tasks_controller_delete_assignee" % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-        <!-- theme: warning -->  > ### Note > > For simplicity, use this endpoint to unassign a task > instead of the generic update task endpoint. > This also prevents bugs and accidental unassignments. 
-
-        :param task_id: (required)
-        :type task_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._tasks_controller_delete_assignee_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _tasks_controller_delete_assignee_serialize(
-        self,
-        task_id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if task_id is not None:
-            _path_params['taskId'] = task_id
+        _path_params = {}
+        if _params['task_id'] is not None:
+            _path_params['taskId'] = _params['task_id']
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
+        _body_params = None
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='DELETE',
-            resource_path='/tasks/{taskId}/assignee',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {}
+
+        return self.api_client.call_api(
+            '/tasks/{taskId}/assignee',
+            'DELETE',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
-    def tasks_controller_delete_task(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
-        """Delete a Task
+    @validate_arguments
+    def tasks_controller_delete_task(self, task_id: StrictStr,
+                                     **kwargs) -> None:  # noqa: E501
+        """Delete a Task  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_delete_task(task_id, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: None
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the tasks_controller_delete_task_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.tasks_controller_delete_task_with_http_info(
+            task_id, **kwargs)  # noqa: E501
 
-        _param = self._tasks_controller_delete_task_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def tasks_controller_delete_task_with_http_info(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
-        """Delete a Task
+            self, task_id: StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+        """Delete a Task  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_delete_task_with_http_info(task_id, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: None
+        """
 
-        _param = self._tasks_controller_delete_task_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['task_id']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def tasks_controller_delete_task_without_preload_content(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Delete a Task
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method tasks_controller_delete_task" %
+                                   _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param task_id: (required)
-        :type task_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._tasks_controller_delete_task_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '204': None,
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _tasks_controller_delete_task_serialize(
-        self,
-        task_id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if task_id is not None:
-            _path_params['taskId'] = task_id
+        _path_params = {}
+        if _params['task_id'] is not None:
+            _path_params['taskId'] = _params['task_id']
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
+        _body_params = None
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='DELETE',
-            resource_path='/tasks/{taskId}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {}
+
+        return self.api_client.call_api(
+            '/tasks/{taskId}',
+            'DELETE',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
+    @validate_arguments
     def tasks_controller_get(
-        self,
-        cursor: Annotated[
+            self,
+            cursor:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Use if a previous request returned a cursor. Will page through results"
             )] = None,
-        label: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned by label on the task"
-                  )] = None,
-        status: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned by the status on the task"
-                  )] = None,
-        workspace_id: Annotated[
+            label: Annotated[
+                Optional[StrictStr],
+                Field(description="Limit tasks returned by label on the task"
+                      )] = None,
+            status: Annotated[
+                Optional[StrictStr],
+                Field(
+                    description="Limit tasks returned by the status on the task"
+                )] = None,
+            workspace_id:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "The id of the workspace you want tasks from. If not provided, will return tasks from all workspaces the user is a member of."
             )] = None,
-        project_id: Annotated[
-            Optional[StrictStr],
-            Field(
-                description="Limit tasks returned to a given project")] = None,
-        name: Annotated[
+            project_id: Annotated[
+                Optional[StrictStr],
+                Field(description="Limit tasks returned to a given project"
+                      )] = None,
+            name:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Limit tasks returned to those that contain this string. Case in-sensitive"
             )] = None,
-        assignee_id: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned to a specific assignee"
-                  )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ListTasks:
-        """List Tasks
+            assignee_id: Annotated[
+                Optional[StrictStr],
+                Field(description="Limit tasks returned to a specific assignee"
+                      )] = None,
+            **kwargs) -> ListTasks:  # noqa: E501
+        """List Tasks  # noqa: E501
 
-        <!-- theme: warning -->  > ### Note > > By default, all tasks that are completed are left out unless > specifically filtered for via the status. 
+        <!-- theme: warning -->  > ### Note > > By default, all tasks that are completed are left out unless > specifically filtered for via the status.   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_get(cursor, label, status, workspace_id, project_id, name, assignee_id, async_req=True)
+        >>> result = thread.get()
 
         :param cursor: Use if a previous request returned a cursor. Will page through results
         :type cursor: str
@@ -563,103 +366,75 @@ class TasksApi:
         :type name: str
         :param assignee_id: Limit tasks returned to a specific assignee
         :type assignee_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: ListTasks
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the tasks_controller_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.tasks_controller_get_with_http_info(
+            cursor, label, status, workspace_id, project_id, name, assignee_id,
+            **kwargs)  # noqa: E501
 
-        _param = self._tasks_controller_get_serialize(
-            cursor=cursor,
-            label=label,
-            status=status,
-            workspace_id=workspace_id,
-            project_id=project_id,
-            name=name,
-            assignee_id=assignee_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListTasks",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def tasks_controller_get_with_http_info(
-        self,
-        cursor: Annotated[
+            self,
+            cursor:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Use if a previous request returned a cursor. Will page through results"
             )] = None,
-        label: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned by label on the task"
-                  )] = None,
-        status: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned by the status on the task"
-                  )] = None,
-        workspace_id: Annotated[
+            label: Annotated[
+                Optional[StrictStr],
+                Field(description="Limit tasks returned by label on the task"
+                      )] = None,
+            status: Annotated[
+                Optional[StrictStr],
+                Field(
+                    description="Limit tasks returned by the status on the task"
+                )] = None,
+            workspace_id:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "The id of the workspace you want tasks from. If not provided, will return tasks from all workspaces the user is a member of."
             )] = None,
-        project_id: Annotated[
-            Optional[StrictStr],
-            Field(
-                description="Limit tasks returned to a given project")] = None,
-        name: Annotated[
+            project_id: Annotated[
+                Optional[StrictStr],
+                Field(description="Limit tasks returned to a given project"
+                      )] = None,
+            name:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Limit tasks returned to those that contain this string. Case in-sensitive"
             )] = None,
-        assignee_id: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned to a specific assignee"
-                  )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ListTasks]:
-        """List Tasks
+            assignee_id: Annotated[
+                Optional[StrictStr],
+                Field(description="Limit tasks returned to a specific assignee"
+                      )] = None,
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """List Tasks  # noqa: E501
 
-        <!-- theme: warning -->  > ### Note > > By default, all tasks that are completed are left out unless > specifically filtered for via the status. 
+        <!-- theme: warning -->  > ### Note > > By default, all tasks that are completed are left out unless > specifically filtered for via the status.   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_get_with_http_info(cursor, label, status, workspace_id, project_id, name, assignee_id, async_req=True)
+        >>> result = thread.get()
 
         :param cursor: Use if a previous request returned a cursor. Will page through results
         :type cursor: str
@@ -675,1203 +450,682 @@ class TasksApi:
         :type name: str
         :param assignee_id: Limit tasks returned to a specific assignee
         :type assignee_id: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(ListTasks, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._tasks_controller_get_serialize(
-            cursor=cursor,
-            label=label,
-            status=status,
-            workspace_id=workspace_id,
-            project_id=project_id,
-            name=name,
-            assignee_id=assignee_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListTasks",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = [
+            'cursor', 'label', 'status', 'workspace_id', 'project_id', 'name',
+            'assignee_id'
+        ]
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def tasks_controller_get_without_preload_content(
-        self,
-        cursor: Annotated[
-            Optional[StrictStr],
-            Field(
-                description=
-                "Use if a previous request returned a cursor. Will page through results"
-            )] = None,
-        label: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned by label on the task"
-                  )] = None,
-        status: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned by the status on the task"
-                  )] = None,
-        workspace_id: Annotated[
-            Optional[StrictStr],
-            Field(
-                description=
-                "The id of the workspace you want tasks from. If not provided, will return tasks from all workspaces the user is a member of."
-            )] = None,
-        project_id: Annotated[
-            Optional[StrictStr],
-            Field(
-                description="Limit tasks returned to a given project")] = None,
-        name: Annotated[
-            Optional[StrictStr],
-            Field(
-                description=
-                "Limit tasks returned to those that contain this string. Case in-sensitive"
-            )] = None,
-        assignee_id: Annotated[
-            Optional[StrictStr],
-            Field(description="Limit tasks returned to a specific assignee"
-                  )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """List Tasks
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method tasks_controller_get" % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-        <!-- theme: warning -->  > ### Note > > By default, all tasks that are completed are left out unless > specifically filtered for via the status. 
-
-        :param cursor: Use if a previous request returned a cursor. Will page through results
-        :type cursor: str
-        :param label: Limit tasks returned by label on the task
-        :type label: str
-        :param status: Limit tasks returned by the status on the task
-        :type status: str
-        :param workspace_id: The id of the workspace you want tasks from. If not provided, will return tasks from all workspaces the user is a member of.
-        :type workspace_id: str
-        :param project_id: Limit tasks returned to a given project
-        :type project_id: str
-        :param name: Limit tasks returned to those that contain this string. Case in-sensitive
-        :type name: str
-        :param assignee_id: Limit tasks returned to a specific assignee
-        :type assignee_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._tasks_controller_get_serialize(
-            cursor=cursor,
-            label=label,
-            status=status,
-            workspace_id=workspace_id,
-            project_id=project_id,
-            name=name,
-            assignee_id=assignee_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListTasks",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _tasks_controller_get_serialize(
-        self,
-        cursor,
-        label,
-        status,
-        workspace_id,
-        project_id,
-        name,
-        assignee_id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
+        _path_params = {}
+
         # process the query parameters
-        if cursor is not None:
+        _query_params = []
+        if _params.get('cursor') is not None:  # noqa: E501
+            _query_params.append(('cursor', _params['cursor']))
 
-            _query_params.append(('cursor', cursor))
+        if _params.get('label') is not None:  # noqa: E501
+            _query_params.append(('label', _params['label']))
 
-        if label is not None:
+        if _params.get('status') is not None:  # noqa: E501
+            _query_params.append(('status', _params['status']))
 
-            _query_params.append(('label', label))
+        if _params.get('workspace_id') is not None:  # noqa: E501
+            _query_params.append(('workspaceId', _params['workspace_id']))
 
-        if status is not None:
+        if _params.get('project_id') is not None:  # noqa: E501
+            _query_params.append(('projectId', _params['project_id']))
 
-            _query_params.append(('status', status))
+        if _params.get('name') is not None:  # noqa: E501
+            _query_params.append(('name', _params['name']))
 
-        if workspace_id is not None:
-
-            _query_params.append(('workspaceId', workspace_id))
-
-        if project_id is not None:
-
-            _query_params.append(('projectId', project_id))
-
-        if name is not None:
-
-            _query_params.append(('name', name))
-
-        if assignee_id is not None:
-
-            _query_params.append(('assigneeId', assignee_id))
+        if _params.get('assignee_id') is not None:  # noqa: E501
+            _query_params.append(('assigneeId', _params['assignee_id']))
 
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
+        _body_params = None
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/tasks',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "ListTasks",
+        }
+
+        return self.api_client.call_api(
+            '/tasks',
+            'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
-    def tasks_controller_get_by_id(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Task:
-        """Retrieve a Task
+    @validate_arguments
+    def tasks_controller_get_by_id(self, task_id: StrictStr,
+                                   **kwargs) -> Task:  # noqa: E501
+        """Retrieve a Task  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_get_by_id(task_id, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: Task
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the tasks_controller_get_by_id_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.tasks_controller_get_by_id_with_http_info(
+            task_id, **kwargs)  # noqa: E501
 
-        _param = self._tasks_controller_get_by_id_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def tasks_controller_get_by_id_with_http_info(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Task]:
-        """Retrieve a Task
+            self, task_id: StrictStr, **kwargs) -> ApiResponse:  # noqa: E501
+        """Retrieve a Task  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_get_by_id_with_http_info(task_id, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(Task, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._tasks_controller_get_by_id_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['task_id']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def tasks_controller_get_by_id_without_preload_content(
-        self,
-        task_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Retrieve a Task
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method tasks_controller_get_by_id" %
+                                   _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param task_id: (required)
-        :type task_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._tasks_controller_get_by_id_serialize(
-            task_id=task_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _tasks_controller_get_by_id_serialize(
-        self,
-        task_id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if task_id is not None:
-            _path_params['taskId'] = task_id
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
+        _path_params = {}
+        if _params['task_id'] is not None:
+            _path_params['taskId'] = _params['task_id']
 
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/tasks/{taskId}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "Task",
+        }
+
+        return self.api_client.call_api(
+            '/tasks/{taskId}',
+            'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
-    def tasks_controller_move_task(
-        self,
-        task_id: StrictStr,
-        move_task: MoveTask,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Task:
-        """Move Workspace
+    @validate_arguments
+    def tasks_controller_move_task(self, task_id: StrictStr,
+                                   move_task: MoveTask,
+                                   **kwargs) -> Task:  # noqa: E501
+        """Move Workspace  # noqa: E501
 
-        ### Notes  When moving tasks from one workspace to another, the tasks project, status, and label(s) and assignee will all be reset 
+        ### Notes  When moving tasks from one workspace to another, the tasks project, status, and label(s) and assignee will all be reset   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_move_task(task_id, move_task, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
         :param move_task: (required)
         :type move_task: MoveTask
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: Task
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the tasks_controller_move_task_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.tasks_controller_move_task_with_http_info(
+            task_id, move_task, **kwargs)  # noqa: E501
 
-        _param = self._tasks_controller_move_task_serialize(
-            task_id=task_id,
-            move_task=move_task,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def tasks_controller_move_task_with_http_info(
-        self,
-        task_id: StrictStr,
-        move_task: MoveTask,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Task]:
-        """Move Workspace
+            self, task_id: StrictStr, move_task: MoveTask,
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """Move Workspace  # noqa: E501
 
-        ### Notes  When moving tasks from one workspace to another, the tasks project, status, and label(s) and assignee will all be reset 
+        ### Notes  When moving tasks from one workspace to another, the tasks project, status, and label(s) and assignee will all be reset   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_move_task_with_http_info(task_id, move_task, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
         :param move_task: (required)
         :type move_task: MoveTask
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(Task, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._tasks_controller_move_task_serialize(
-            task_id=task_id,
-            move_task=move_task,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['task_id', 'move_task']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def tasks_controller_move_task_without_preload_content(
-        self,
-        task_id: StrictStr,
-        move_task: MoveTask,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Move Workspace
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method tasks_controller_move_task" %
+                                   _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-        ### Notes  When moving tasks from one workspace to another, the tasks project, status, and label(s) and assignee will all be reset 
-
-        :param task_id: (required)
-        :type task_id: str
-        :param move_task: (required)
-        :type move_task: MoveTask
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._tasks_controller_move_task_serialize(
-            task_id=task_id,
-            move_task=move_task,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _tasks_controller_move_task_serialize(
-        self,
-        task_id,
-        move_task,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if task_id is not None:
-            _path_params['taskId'] = task_id
+        _path_params = {}
+        if _params['task_id'] is not None:
+            _path_params['taskId'] = _params['task_id']
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-        if move_task is not None:
-            _body_params = move_task
+        _body_params = None
+        if _params['move_task'] is not None:
+            _body_params = _params['move_task']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    ['application/json']))
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+        _content_types_list = _params.get(
+            '_content_type',
+            self.api_client.select_header_content_type(['application/json']))
+        if _content_types_list:
+            _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='PATCH',
-            resource_path='/tasks/{taskId}/move',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "Task",
+        }
+
+        return self.api_client.call_api(
+            '/tasks/{taskId}/move',
+            'PATCH',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
-    def tasks_controller_post(
-        self,
-        task_post: TaskPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Task:
-        """Create Task
+    @validate_arguments
+    def tasks_controller_post(self, task_post: TaskPost,
+                              **kwargs) -> Task:  # noqa: E501
+        """Create Task  # noqa: E501
 
-        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax). 
+        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_post(task_post, async_req=True)
+        >>> result = thread.get()
 
         :param task_post: (required)
         :type task_post: TaskPost
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: Task
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the tasks_controller_post_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.tasks_controller_post_with_http_info(
+            task_post, **kwargs)  # noqa: E501
 
-        _param = self._tasks_controller_post_serialize(
-            task_post=task_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def tasks_controller_post_with_http_info(
-        self,
-        task_post: TaskPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Task]:
-        """Create Task
+            self, task_post: TaskPost, **kwargs) -> ApiResponse:  # noqa: E501
+        """Create Task  # noqa: E501
 
-        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax). 
+        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_post_with_http_info(task_post, async_req=True)
+        >>> result = thread.get()
 
         :param task_post: (required)
         :type task_post: TaskPost
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(Task, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._tasks_controller_post_serialize(
-            task_post=task_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['task_post']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def tasks_controller_post_without_preload_content(
-        self,
-        task_post: TaskPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Create Task
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method tasks_controller_post" % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-        ## Description Input  When passing in a task description, the input will be treated as [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax). 
-
-        :param task_post: (required)
-        :type task_post: TaskPost
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._tasks_controller_post_serialize(
-            task_post=task_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _tasks_controller_post_serialize(
-        self,
-        task_post,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
+        _path_params = {}
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-        if task_post is not None:
-            _body_params = task_post
+        _body_params = None
+        if _params['task_post'] is not None:
+            _body_params = _params['task_post']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    ['application/json']))
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+        _content_types_list = _params.get(
+            '_content_type',
+            self.api_client.select_header_content_type(['application/json']))
+        if _content_types_list:
+            _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/tasks',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '201': "Task",
+        }
+
+        return self.api_client.call_api(
+            '/tasks',
+            'POST',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
-    def tasks_controller_update_task(
-        self,
-        task_id: StrictStr,
-        task_patch: TaskPatch,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Task:
-        """Update a Task
+    @validate_arguments
+    def tasks_controller_update_task(self, task_id: StrictStr,
+                                     task_patch: TaskPatch,
+                                     **kwargs) -> Task:  # noqa: E501
+        """Update a Task  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_update_task(task_id, task_patch, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
         :param task_patch: (required)
         :type task_patch: TaskPatch
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: Task
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the tasks_controller_update_task_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.tasks_controller_update_task_with_http_info(
+            task_id, task_patch, **kwargs)  # noqa: E501
 
-        _param = self._tasks_controller_update_task_serialize(
-            task_id=task_id,
-            task_patch=task_patch,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def tasks_controller_update_task_with_http_info(
-        self,
-        task_id: StrictStr,
-        task_patch: TaskPatch,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Task]:
-        """Update a Task
+            self, task_id: StrictStr, task_patch: TaskPatch,
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """Update a Task  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.tasks_controller_update_task_with_http_info(task_id, task_patch, async_req=True)
+        >>> result = thread.get()
 
         :param task_id: (required)
         :type task_id: str
         :param task_patch: (required)
         :type task_patch: TaskPatch
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(Task, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._tasks_controller_update_task_serialize(
-            task_id=task_id,
-            task_patch=task_patch,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['task_id', 'task_patch']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def tasks_controller_update_task_without_preload_content(
-        self,
-        task_id: StrictStr,
-        task_patch: TaskPatch,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Update a Task
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method tasks_controller_update_task" %
+                                   _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param task_id: (required)
-        :type task_id: str
-        :param task_patch: (required)
-        :type task_patch: TaskPatch
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._tasks_controller_update_task_serialize(
-            task_id=task_id,
-            task_patch=task_patch,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Task",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _tasks_controller_update_task_serialize(
-        self,
-        task_id,
-        task_patch,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if task_id is not None:
-            _path_params['taskId'] = task_id
+        _path_params = {}
+        if _params['task_id'] is not None:
+            _path_params['taskId'] = _params['task_id']
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-        if task_patch is not None:
-            _body_params = task_patch
+        _body_params = None
+        if _params['task_patch'] is not None:
+            _body_params = _params['task_patch']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    ['application/json']))
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+        _content_types_list = _params.get(
+            '_content_type',
+            self.api_client.select_header_content_type(['application/json']))
+        if _content_types_list:
+            _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='PATCH',
-            resource_path='/tasks/{taskId}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "Task",
+        }
+
+        return self.api_client.call_api(
+            '/tasks/{taskId}',
+            'PATCH',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))

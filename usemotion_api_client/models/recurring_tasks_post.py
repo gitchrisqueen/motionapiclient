@@ -18,53 +18,47 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictStr, field_validator
-from pydantic import Field
-from typing_extensions import Annotated
+from typing import Optional
+from pydantic import BaseModel, Field, StrictStr, constr, validator
 from usemotion_api_client.models.recurring_tasks_post_duration import RecurringTasksPostDuration
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
 
 
 class RecurringTasksPost(BaseModel):
     """
     RecurringTasksPost
     """
-
-  # noqa: E501
     frequency: StrictStr = Field(
+        ...,
         description=
         "Frequency in which the task should be scheduled. Please carefully read how to construct above."
     )
-    deadline_type: Optional[StrictStr] = Field(default='SOFT',
-                                               alias="deadlineType")
+    deadline_type: Optional[StrictStr] = Field('SOFT', alias="deadlineType")
     duration: Optional[RecurringTasksPostDuration] = None
     starting_on: Optional[datetime] = Field(
-        default=None,
+        None,
+        alias="startingOn",
         description=
-        "ISO 8601 Date which is trimmed to the start of the day passed",
-        alias="startingOn")
-    ideal_time: Optional[StrictStr] = Field(default=None, alias="idealTime")
+        "ISO 8601 Date which is trimmed to the start of the day passed")
+    ideal_time: Optional[StrictStr] = Field(None, alias="idealTime")
     schedule: Optional[StrictStr] = Field(
-        default='Work Hours', description="Schedule the task must adhere to")
-    name: Annotated[str, Field(min_length=1, strict=True)] = Field(
-        description="Name / title of the task")
-    workspace_id: StrictStr = Field(alias="workspaceId")
+        'Work Hours', description="Schedule the task must adhere to")
+    name: constr(strict=True,
+                 min_length=1) = Field(...,
+                                       description="Name / title of the task")
+    workspace_id: StrictStr = Field(..., alias="workspaceId")
     description: Optional[StrictStr] = None
-    priority: StrictStr
+    priority: StrictStr = Field(...)
     assignee_id: StrictStr = Field(
-        description="The user id the task should be assigned too",
-        alias="assigneeId")
-    __properties: ClassVar[List[str]] = [
+        ...,
+        alias="assigneeId",
+        description="The user id the task should be assigned too")
+    __properties = [
         "frequency", "deadlineType", "duration", "startingOn", "idealTime",
         "schedule", "name", "workspaceId", "description", "priority",
         "assigneeId"
     ]
 
-    @field_validator('deadline_type')
+    @validator('deadline_type')
     def deadline_type_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
@@ -74,88 +68,74 @@ class RecurringTasksPost(BaseModel):
             raise ValueError("must be one of enum values ('HARD', 'SOFT')")
         return value
 
-    @field_validator('priority')
+    @validator('priority')
     def priority_validate_enum(cls, value):
         """Validates the enum"""
         if value not in ('HIGH', 'MEDIUM'):
             raise ValueError("must be one of enum values ('HIGH', 'MEDIUM')")
         return value
 
-    model_config = {
-        "populate_by_name": True,
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> RecurringTasksPost:
         """Create an instance of RecurringTasksPost from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude={},
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         # override the default output from pydantic by calling `to_dict()` of duration
         if self.duration:
             _dict['duration'] = self.duration.to_dict()
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict) -> Self:
+    def from_dict(cls, obj: dict) -> RecurringTasksPost:
         """Create an instance of RecurringTasksPost from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return RecurringTasksPost.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = RecurringTasksPost.parse_obj({
             "frequency":
             obj.get("frequency"),
-            "deadlineType":
+            "deadline_type":
             obj.get("deadlineType")
             if obj.get("deadlineType") is not None else 'SOFT',
             "duration":
             RecurringTasksPostDuration.from_dict(obj.get("duration"))
             if obj.get("duration") is not None else None,
-            "startingOn":
+            "starting_on":
             obj.get("startingOn"),
-            "idealTime":
+            "ideal_time":
             obj.get("idealTime"),
             "schedule":
             obj.get("schedule")
             if obj.get("schedule") is not None else 'Work Hours',
             "name":
             obj.get("name"),
-            "workspaceId":
+            "workspace_id":
             obj.get("workspaceId"),
             "description":
             obj.get("description"),
             "priority":
             obj.get("priority")
             if obj.get("priority") is not None else 'MEDIUM',
-            "assigneeId":
+            "assignee_id":
             obj.get("assigneeId")
         })
         return _obj

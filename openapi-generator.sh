@@ -38,7 +38,7 @@ echo "Using Pydantic version: $pydantic_version | Generator: $generator"
 git_tag="p${pydantic_version}_$PACKAGE_VERSION"
 
 # Create pydantic v version of code
-echo "Generating v$PACKAGE_VERSION pydantic v2 code"
+echo "Generating v$PACKAGE_VERSION pydantic v$pydantic_version code"
 openapi-generator generate --git-host github.com --git-repo-id $GIT_REPO --git-user-id $GIT_USER --enable-post-process-file \
  -g $generator -i $INPUT_FILE -o ./ --additional-properties="$CONFIG_OPTIONS"
 

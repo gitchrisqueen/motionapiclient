@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **tasks** | [**List[RecurringTask]**](RecurringTask.md) |  | 

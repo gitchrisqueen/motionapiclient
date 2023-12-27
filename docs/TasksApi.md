@@ -23,7 +23,6 @@ Unassign a task
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -65,7 +64,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **task_id** | **str**|  | 
@@ -84,7 +82,6 @@ void (empty response body)
  - **Accept**: Not defined
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **204** |  |  -  |
@@ -99,7 +96,6 @@ Delete a Task
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -141,7 +137,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **task_id** | **str**|  | 
@@ -160,7 +155,6 @@ void (empty response body)
  - **Accept**: Not defined
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **204** |  |  -  |
@@ -177,7 +171,6 @@ List Tasks
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -228,7 +221,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **cursor** | **str**| Use if a previous request returned a cursor. Will page through results | [optional] 
@@ -253,7 +245,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -268,7 +259,6 @@ Retrieve a Task
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -313,7 +303,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **task_id** | **str**|  | 
@@ -332,7 +321,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -349,7 +337,6 @@ Move Workspace
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -396,7 +383,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **task_id** | **str**|  | 
@@ -416,7 +402,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |
@@ -433,7 +418,6 @@ Create Task
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -479,7 +463,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **task_post** | [**TaskPost**](TaskPost.md)|  | 
@@ -498,7 +481,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** |  |  -  |
@@ -513,7 +495,6 @@ Update a Task
 ### Example
 
 * Api Key Authentication (Motion_API_Key):
-
 ```python
 import time
 import os
@@ -560,7 +541,6 @@ with usemotion_api_client.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **task_id** | **str**|  | 
@@ -580,7 +560,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** |  |  -  |

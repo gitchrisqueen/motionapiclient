@@ -12,20 +12,14 @@
     Do not edit the class manually.
 """  # noqa: E501
 
+import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
-from typing import Dict, List, Optional, Tuple, Union, Any
+from pydantic import validate_arguments, ValidationError
 
-try:
-    from typing import Annotated
-except ImportError:
-    from typing_extensions import Annotated
-
-from pydantic import Field
 from typing_extensions import Annotated
-from pydantic import StrictStr
+from pydantic import Field, StrictStr
 
 from typing import Optional
 
@@ -35,7 +29,8 @@ from usemotion_api_client.models.project_post import ProjectPost
 
 from usemotion_api_client.api_client import ApiClient
 from usemotion_api_client.api_response import ApiResponse
-from usemotion_api_client.rest import RESTResponseType
+from usemotion_api_client.exceptions import (  # noqa: F401
+    ApiTypeError, ApiValueError)
 
 
 class ProjectsApi:
@@ -50,721 +45,433 @@ class ProjectsApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-    @validate_call
+    @validate_arguments
     def projects_controller_get(
-        self,
-        workspace_id: StrictStr,
-        cursor: Annotated[
+            self,
+            workspace_id: StrictStr,
+            cursor:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Use if a previous request returned a cursor. Will page through results"
             )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ListProjects:
-        """List Projects
+            **kwargs) -> ListProjects:  # noqa: E501
+        """List Projects  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.projects_controller_get(workspace_id, cursor, async_req=True)
+        >>> result = thread.get()
 
         :param workspace_id: (required)
         :type workspace_id: str
         :param cursor: Use if a previous request returned a cursor. Will page through results
         :type cursor: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: ListProjects
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the projects_controller_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.projects_controller_get_with_http_info(
+            workspace_id, cursor, **kwargs)  # noqa: E501
 
-        _param = self._projects_controller_get_serialize(
-            workspace_id=workspace_id,
-            cursor=cursor,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListProjects",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def projects_controller_get_with_http_info(
-        self,
-        workspace_id: StrictStr,
-        cursor: Annotated[
+            self,
+            workspace_id: StrictStr,
+            cursor:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Use if a previous request returned a cursor. Will page through results"
             )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ListProjects]:
-        """List Projects
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """List Projects  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.projects_controller_get_with_http_info(workspace_id, cursor, async_req=True)
+        >>> result = thread.get()
 
         :param workspace_id: (required)
         :type workspace_id: str
         :param cursor: Use if a previous request returned a cursor. Will page through results
         :type cursor: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(ListProjects, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._projects_controller_get_serialize(
-            workspace_id=workspace_id,
-            cursor=cursor,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListProjects",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['workspace_id', 'cursor']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def projects_controller_get_without_preload_content(
-        self,
-        workspace_id: StrictStr,
-        cursor: Annotated[
-            Optional[StrictStr],
-            Field(
-                description=
-                "Use if a previous request returned a cursor. Will page through results"
-            )] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """List Projects
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method projects_controller_get" % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param workspace_id: (required)
-        :type workspace_id: str
-        :param cursor: Use if a previous request returned a cursor. Will page through results
-        :type cursor: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._projects_controller_get_serialize(
-            workspace_id=workspace_id,
-            cursor=cursor,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListProjects",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _projects_controller_get_serialize(
-        self,
-        workspace_id,
-        cursor,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
+        _path_params = {}
+
         # process the query parameters
-        if cursor is not None:
+        _query_params = []
+        if _params.get('cursor') is not None:  # noqa: E501
+            _query_params.append(('cursor', _params['cursor']))
 
-            _query_params.append(('cursor', cursor))
-
-        if workspace_id is not None:
-
-            _query_params.append(('workspaceId', workspace_id))
+        if _params.get('workspace_id') is not None:  # noqa: E501
+            _query_params.append(('workspaceId', _params['workspace_id']))
 
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
+        _body_params = None
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/projects',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "ListProjects",
+        }
+
+        return self.api_client.call_api(
+            '/projects',
+            'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
+    @validate_arguments
     def projects_controller_get_single_project(
-        self,
-        project_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Project:
-        """Retrieve Project
+            self, project_id: StrictStr, **kwargs) -> Project:  # noqa: E501
+        """Retrieve Project  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.projects_controller_get_single_project(project_id, async_req=True)
+        >>> result = thread.get()
 
         :param project_id: (required)
         :type project_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: Project
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the projects_controller_get_single_project_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.projects_controller_get_single_project_with_http_info(
+            project_id, **kwargs)  # noqa: E501
 
-        _param = self._projects_controller_get_single_project_serialize(
-            project_id=project_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Project",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def projects_controller_get_single_project_with_http_info(
-        self,
-        project_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Project]:
-        """Retrieve Project
+            self, project_id: StrictStr,
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """Retrieve Project  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.projects_controller_get_single_project_with_http_info(project_id, async_req=True)
+        >>> result = thread.get()
 
         :param project_id: (required)
         :type project_id: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(Project, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._projects_controller_get_single_project_serialize(
-            project_id=project_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Project",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['project_id']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def projects_controller_get_single_project_without_preload_content(
-        self,
-        project_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Retrieve Project
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method projects_controller_get_single_project" % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param project_id: (required)
-        :type project_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._projects_controller_get_single_project_serialize(
-            project_id=project_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "Project",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _projects_controller_get_single_project_serialize(
-        self,
-        project_id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if project_id is not None:
-            _path_params['projectId'] = project_id
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
+        _path_params = {}
+        if _params['project_id'] is not None:
+            _path_params['projectId'] = _params['project_id']
 
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/projects/{projectId}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "Project",
+        }
+
+        return self.api_client.call_api(
+            '/projects/{projectId}',
+            'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
-    def projects_controller_post(
-        self,
-        project_post: ProjectPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> Project:
-        """Create Project
+    @validate_arguments
+    def projects_controller_post(self, project_post: ProjectPost,
+                                 **kwargs) -> Project:  # noqa: E501
+        """Create Project  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.projects_controller_post(project_post, async_req=True)
+        >>> result = thread.get()
 
         :param project_post: (required)
         :type project_post: ProjectPost
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: Project
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the projects_controller_post_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.projects_controller_post_with_http_info(
+            project_post, **kwargs)  # noqa: E501
 
-        _param = self._projects_controller_post_serialize(
-            project_post=project_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "Project",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def projects_controller_post_with_http_info(
-        self,
-        project_post: ProjectPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[Project]:
-        """Create Project
+            self, project_post: ProjectPost,
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """Create Project  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.projects_controller_post_with_http_info(project_post, async_req=True)
+        >>> result = thread.get()
 
         :param project_post: (required)
         :type project_post: ProjectPost
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(Project, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._projects_controller_post_serialize(
-            project_post=project_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "Project",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['project_post']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def projects_controller_post_without_preload_content(
-        self,
-        project_post: ProjectPost,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Create Project
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method projects_controller_post" %
+                                   _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param project_post: (required)
-        :type project_post: ProjectPost
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._projects_controller_post_serialize(
-            project_post=project_post,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "Project",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _projects_controller_post_serialize(
-        self,
-        project_post,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
+        _path_params = {}
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-        if project_post is not None:
-            _body_params = project_post
+        _body_params = None
+        if _params['project_post'] is not None:
+            _body_params = _params['project_post']
 
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    ['application/json']))
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+        _content_types_list = _params.get(
+            '_content_type',
+            self.api_client.select_header_content_type(['application/json']))
+        if _content_types_list:
+            _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/projects',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '201': "Project",
+        }
+
+        return self.api_client.call_api(
+            '/projects',
+            'POST',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))

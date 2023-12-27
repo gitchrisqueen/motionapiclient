@@ -17,41 +17,35 @@ import pprint
 import re  # noqa: F401
 import json
 
-from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictStr, field_validator
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictStr, conlist, validator
 from usemotion_api_client.models.label import Label
 from usemotion_api_client.models.project import Project
 from usemotion_api_client.models.status import Status
 from usemotion_api_client.models.user import User
 from usemotion_api_client.models.workspace import Workspace
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
 
 
 class RecurringTask(BaseModel):
     """
     RecurringTask
     """
-
-  # noqa: E501
-    workspace: Workspace
-    id: StrictStr
-    name: StrictStr
+    workspace: Workspace = Field(...)
+    id: StrictStr = Field(...)
+    name: StrictStr = Field(...)
     description: Optional[StrictStr] = None
-    creator: User
-    assignee: User
+    creator: User = Field(...)
+    assignee: User = Field(...)
     project: Optional[Project] = None
-    status: Status
-    priority: StrictStr
-    labels: List[Label]
-    __properties: ClassVar[List[str]] = [
+    status: Status = Field(...)
+    priority: StrictStr = Field(...)
+    labels: conlist(Label) = Field(...)
+    __properties = [
         "workspace", "id", "name", "description", "creator", "assignee",
         "project", "status", "priority", "labels"
     ]
 
-    @field_validator('priority')
+    @validator('priority')
     def priority_validate_enum(cls, value):
         """Validates the enum"""
         if value not in ('ASAP', 'HIGH', 'MEDIUM', 'LOW'):
@@ -59,41 +53,27 @@ class RecurringTask(BaseModel):
                 "must be one of enum values ('ASAP', 'HIGH', 'MEDIUM', 'LOW')")
         return value
 
-    model_config = {
-        "populate_by_name": True,
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> RecurringTask:
         """Create an instance of RecurringTask from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude={},
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         # override the default output from pydantic by calling `to_dict()` of workspace
         if self.workspace:
             _dict['workspace'] = self.workspace.to_dict()
@@ -119,15 +99,15 @@ class RecurringTask(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict) -> Self:
+    def from_dict(cls, obj: dict) -> RecurringTask:
         """Create an instance of RecurringTask from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return RecurringTask.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = RecurringTask.parse_obj({
             "workspace":
             Workspace.from_dict(obj.get("workspace"))
             if obj.get("workspace") is not None else None,

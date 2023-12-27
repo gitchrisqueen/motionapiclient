@@ -19,16 +19,9 @@ import pprint
 import re  # noqa: F401
 
 from typing import Any, List, Optional, Union
-from pydantic import BaseModel, Field, StrictStr, ValidationError, field_validator
-from pydantic import Field
-from typing_extensions import Annotated
-from typing import Union, Any, List, TYPE_CHECKING, Optional, Dict
-from typing_extensions import Literal
+from pydantic import BaseModel, Field, StrictStr, ValidationError, confloat, conint, validator
+from typing import Union, Any, List, TYPE_CHECKING
 from pydantic import StrictStr, Field
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
 
 TASKPATCHDURATION_ONE_OF_SCHEMAS = ["float", "str"]
 
@@ -40,16 +33,17 @@ class TaskPatchDuration(BaseModel):
     # data type: str
     oneof_schema_1_validator: Optional[StrictStr] = None
     # data type: float
-    oneof_schema_2_validator: Optional[
-        Union[Annotated[float, Field(strict=True, ge=1)],
-              Annotated[int, Field(strict=True, ge=1)]]] = None
-    actual_instance: Optional[Union[float, str]] = None
-    one_of_schemas: List[str] = Literal["float", "str"]
+    oneof_schema_2_validator: Optional[Union[confloat(ge=1, strict=True),
+                                             conint(ge=1, strict=True)]] = None
+    if TYPE_CHECKING:
+        actual_instance: Union[float, str]
+    else:
+        actual_instance: Any
+    one_of_schemas: List[str] = Field(TASKPATCHDURATION_ONE_OF_SCHEMAS,
+                                      const=True)
 
-    model_config = {
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    class Config:
+        validate_assignment = True
 
     def __init__(self, *args, **kwargs) -> None:
         if args:
@@ -65,9 +59,9 @@ class TaskPatchDuration(BaseModel):
         else:
             super().__init__(**kwargs)
 
-    @field_validator('actual_instance')
+    @validator('actual_instance')
     def actual_instance_must_validate_oneof(cls, v):
-        instance = TaskPatchDuration.model_construct()
+        instance = TaskPatchDuration.construct()
         error_messages = []
         match = 0
         # validate data type: str
@@ -96,13 +90,13 @@ class TaskPatchDuration(BaseModel):
             return v
 
     @classmethod
-    def from_dict(cls, obj: dict) -> Self:
+    def from_dict(cls, obj: dict) -> TaskPatchDuration:
         return cls.from_json(json.dumps(obj))
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> TaskPatchDuration:
         """Returns the object represented by the json string"""
-        instance = cls.model_construct()
+        instance = TaskPatchDuration.construct()
         error_messages = []
         match = 0
 
@@ -149,7 +143,7 @@ class TaskPatchDuration(BaseModel):
         else:
             return json.dumps(self.actual_instance)
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> dict:
         """Returns the dict representation of the actual instance"""
         if self.actual_instance is None:
             return None
@@ -163,4 +157,4 @@ class TaskPatchDuration(BaseModel):
 
     def to_str(self) -> str:
         """Returns the string representation of the actual instance"""
-        return pprint.pformat(self.model_dump())
+        return pprint.pformat(self.dict())

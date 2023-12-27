@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **frequency** | **str** | Frequency in which the task should be scheduled. Please carefully read how to construct above. | 

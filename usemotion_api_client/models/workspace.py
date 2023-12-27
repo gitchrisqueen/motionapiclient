@@ -17,68 +17,45 @@ import pprint
 import re  # noqa: F401
 import json
 
-from typing import Any, ClassVar, Dict, List, Optional
-from pydantic import BaseModel, StrictStr
-from pydantic import Field
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictStr, conlist
 from usemotion_api_client.models.label import Label
 from usemotion_api_client.models.status import Status
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
 
 
 class Workspace(BaseModel):
     """
     Workspace
     """
+    id: StrictStr = Field(...)
+    name: StrictStr = Field(...)
+    team_id: Optional[StrictStr] = Field(None, alias="teamId")
+    statuses: conlist(Status) = Field(...)
+    labels: conlist(Label) = Field(...)
+    type: StrictStr = Field(...)
+    __properties = ["id", "name", "teamId", "statuses", "labels", "type"]
 
-  # noqa: E501
-    id: StrictStr
-    name: StrictStr
-    team_id: Optional[StrictStr] = Field(default=None, alias="teamId")
-    statuses: List[Status]
-    labels: List[Label]
-    type: StrictStr
-    __properties: ClassVar[List[str]] = [
-        "id", "name", "teamId", "statuses", "labels", "type"
-    ]
-
-    model_config = {
-        "populate_by_name": True,
-        "validate_assignment": True,
-        "protected_namespaces": (),
-    }
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> Workspace:
         """Create an instance of Workspace from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude={},
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True, exclude={}, exclude_none=True)
         # override the default output from pydantic by calling `to_dict()` of each item in statuses (list)
         _items = []
         if self.statuses:
@@ -96,20 +73,20 @@ class Workspace(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict) -> Self:
+    def from_dict(cls, obj: dict) -> Workspace:
         """Create an instance of Workspace from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return Workspace.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = Workspace.parse_obj({
             "id":
             obj.get("id"),
             "name":
             obj.get("name"),
-            "teamId":
+            "team_id":
             obj.get("teamId"),
             "statuses":
             [Status.from_dict(_item) for _item in obj.get("statuses")]

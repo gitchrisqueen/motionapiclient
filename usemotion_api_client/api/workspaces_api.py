@@ -12,20 +12,14 @@
     Do not edit the class manually.
 """  # noqa: E501
 
+import re  # noqa: F401
 import io
 import warnings
 
-from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
-from typing import Dict, List, Optional, Tuple, Union, Any
+from pydantic import validate_arguments, ValidationError
 
-try:
-    from typing import Annotated
-except ImportError:
-    from typing_extensions import Annotated
-
-from pydantic import Field
 from typing_extensions import Annotated
-from pydantic import StrictStr
+from pydantic import Field, StrictStr, conlist
 
 from typing import List, Optional
 
@@ -34,7 +28,8 @@ from usemotion_api_client.models.status import Status
 
 from usemotion_api_client.api_client import ApiClient
 from usemotion_api_client.api_response import ApiResponse
-from usemotion_api_client.rest import RESTResponseType
+from usemotion_api_client.exceptions import (  # noqa: F401
+    ApiTypeError, ApiValueError)
 
 
 class WorkspacesApi:
@@ -49,490 +44,294 @@ class WorkspacesApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
-    @validate_call
-    def statuses_controller_get(
-        self,
-        workspace_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[Status]:
-        """List statuses for a workspace
+    @validate_arguments
+    def statuses_controller_get(self, workspace_id: StrictStr,
+                                **kwargs) -> List[Status]:  # noqa: E501
+        """List statuses for a workspace  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.statuses_controller_get(workspace_id, async_req=True)
+        >>> result = thread.get()
 
         :param workspace_id: (required)
         :type workspace_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: List[Status]
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the statuses_controller_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.statuses_controller_get_with_http_info(
+            workspace_id, **kwargs)  # noqa: E501
 
-        _param = self._statuses_controller_get_serialize(
-            workspace_id=workspace_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Status]",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def statuses_controller_get_with_http_info(
-        self,
-        workspace_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[Status]]:
-        """List statuses for a workspace
+            self, workspace_id: StrictStr,
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """List statuses for a workspace  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.statuses_controller_get_with_http_info(workspace_id, async_req=True)
+        >>> result = thread.get()
 
         :param workspace_id: (required)
         :type workspace_id: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(List[Status], status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._statuses_controller_get_serialize(
-            workspace_id=workspace_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Status]",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['workspace_id']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def statuses_controller_get_without_preload_content(
-        self,
-        workspace_id: StrictStr,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """List statuses for a workspace
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method statuses_controller_get" % _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param workspace_id: (required)
-        :type workspace_id: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._statuses_controller_get_serialize(
-            workspace_id=workspace_id,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[Status]",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _statuses_controller_get_serialize(
-        self,
-        workspace_id,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {}
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        # process the query parameters
-        if workspace_id is not None:
+        _path_params = {}
 
-            _query_params.append(('workspaceId', workspace_id))
+        # process the query parameters
+        _query_params = []
+        if _params.get('workspace_id') is not None:  # noqa: E501
+            _query_params.append(('workspaceId', _params['workspace_id']))
 
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
+        _body_params = None
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/statuses',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "List[Status]",
+        }
+
+        return self.api_client.call_api(
+            '/statuses',
+            'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))
 
-    @validate_call
+    @validate_arguments
     def workspaces_controller_get(
-        self,
-        cursor: Annotated[
+            self,
+            cursor:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Use if a previous request returned a cursor. Will page through results"
             )] = None,
-        ids: Optional[List[StrictStr]] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ListWorkspaces:
-        """List workspaces
+            ids: Optional[conlist(StrictStr)] = None,
+            **kwargs) -> ListWorkspaces:  # noqa: E501
+        """List workspaces  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.workspaces_controller_get(cursor, ids, async_req=True)
+        >>> result = thread.get()
 
         :param cursor: Use if a previous request returned a cursor. Will page through results
         :type cursor: str
         :param ids:
         :type ids: List[str]
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: ListWorkspaces
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the workspaces_controller_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.workspaces_controller_get_with_http_info(
+            cursor, ids, **kwargs)  # noqa: E501
 
-        _param = self._workspaces_controller_get_serialize(
-            cursor=cursor,
-            ids=ids,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListWorkspaces",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-    @validate_call
+    @validate_arguments
     def workspaces_controller_get_with_http_info(
-        self,
-        cursor: Annotated[
+            self,
+            cursor:
+        Annotated[
             Optional[StrictStr],
             Field(
                 description=
                 "Use if a previous request returned a cursor. Will page through results"
             )] = None,
-        ids: Optional[List[StrictStr]] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[ListWorkspaces]:
-        """List workspaces
+            ids: Optional[conlist(StrictStr)] = None,
+            **kwargs) -> ApiResponse:  # noqa: E501
+        """List workspaces  # noqa: E501
 
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.workspaces_controller_get_with_http_info(cursor, ids, async_req=True)
+        >>> result = thread.get()
 
         :param cursor: Use if a previous request returned a cursor. Will page through results
         :type cursor: str
         :param ids:
         :type ids: List[str]
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(ListWorkspaces, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._workspaces_controller_get_serialize(
-            cursor=cursor,
-            ids=ids,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListWorkspaces",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        _all_params = ['cursor', 'ids']
+        _all_params.extend([
+            'async_req', '_return_http_data_only', '_preload_content',
+            '_request_timeout', '_request_auth', '_content_type', '_headers'
+        ])
 
-    @validate_call
-    def workspaces_controller_get_without_preload_content(
-        self,
-        cursor: Annotated[
-            Optional[StrictStr],
-            Field(
-                description=
-                "Use if a previous request returned a cursor. Will page through results"
-            )] = None,
-        ids: Optional[List[StrictStr]] = None,
-        _request_timeout: Union[None, Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                Tuple[Annotated[StrictFloat,
-                                                Field(gt=0)],
-                                      Annotated[StrictFloat,
-                                                Field(gt=0)]]] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """List workspaces
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError("Got an unexpected keyword argument '%s'"
+                                   " to method workspaces_controller_get" %
+                                   _key)
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-        :param cursor: Use if a previous request returned a cursor. Will page through results
-        :type cursor: str
-        :param ids:
-        :type ids: List[str]
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._workspaces_controller_get_serialize(
-            cursor=cursor,
-            ids=ids,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index)
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "ListWorkspaces",
-        }
-        response_data = self.api_client.call_api(
-            *_param, _request_timeout=_request_timeout)
-        return response_data.response
-
-    def _workspaces_controller_get_serialize(
-        self,
-        cursor,
-        ids,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> Tuple:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-            'ids': 'multi',
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[str, str] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
+        _path_params = {}
+
         # process the query parameters
-        if cursor is not None:
+        _query_params = []
+        if _params.get('cursor') is not None:  # noqa: E501
+            _query_params.append(('cursor', _params['cursor']))
 
-            _query_params.append(('cursor', cursor))
-
-        if ids is not None:
-
-            _query_params.append(('ids', ids))
+        if _params.get('ids') is not None:  # noqa: E501
+            _query_params.append(('ids', _params['ids']))
+            _collection_formats['ids'] = 'multi'
 
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
+        _body_params = None
         # set the HTTP header `Accept`
         _header_params['Accept'] = self.api_client.select_header_accept(
-            ['application/json'])
+            ['application/json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = ['Motion_API_Key']
+        _auth_settings = ['Motion_API_Key']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/workspaces',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "ListWorkspaces",
+        }
+
+        return self.api_client.call_api(
+            '/workspaces',
+            'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get(
+                '_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth)
+            _request_auth=_params.get('_request_auth'))

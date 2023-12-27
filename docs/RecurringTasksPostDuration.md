@@ -3,7 +3,6 @@
 A duration can be one of the following... \"REMINDER\", or a integer greater than 0
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 

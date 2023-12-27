@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **next_cursor** | **str** | Returned if there are more entities to return. Pass back with the cursor param set to continue paging. | [optional] 
