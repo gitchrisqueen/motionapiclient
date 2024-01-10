@@ -39,9 +39,9 @@ class Task(BaseModel):
     description: Optional[StrictStr] = None
     due_date: datetime = Field(..., alias="dueDate")
     deadline_type: StrictStr = Field(..., alias="deadlineType")
-    parent_recurring_task_id: StrictStr = Field(...,
+    parent_recurring_task_id: Optional[StrictStr] = Field(None,
                                                 alias="parentRecurringTaskId")
-    completed: StrictBool = Field(...)
+    completed: Optional[StrictBool] = False
     creator: User = Field(...)
     project: Optional[Project] = None
     status: Status = Field(...)
