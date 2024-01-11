@@ -39,7 +39,13 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskPatch"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TaskPatch"
+                  },
+                  {}
+                ],
+                "contentMediaType": "application/json"
               }
             }
           },
@@ -138,7 +144,13 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TaskPost"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/TaskPost"
+                  },
+                  {}
+                ],
+                "contentMediaType": "application/json"
               }
             }
           },
@@ -311,7 +323,13 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MoveTask"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/MoveTask"
+                  },
+                  {}
+                ],
+                "contentMediaType": "application/json"
               }
             }
           },
@@ -348,7 +366,13 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RecurringTasksPost"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/RecurringTasksPost"
+                  },
+                  {}
+                ],
+                "contentMediaType": "application/json"
               }
             }
           },
@@ -378,9 +402,10 @@
         "operationId": "RecurringTasksController_listRecurringTasks",
         "parameters": [
           {
-            "name": "cursor",
+            "name": "workspaceId",
             "in": "query",
-            "description": "Use if a previous request returned a cursor. Will page through results",
+            "description": "The id of the workspace you want tasks from.",
+            "required": true,
             "style": "form",
             "explode": true,
             "schema": {
@@ -388,10 +413,9 @@
             }
           },
           {
-            "name": "workspaceId",
+            "name": "cursor",
             "in": "query",
-            "description": "The id of the workspace you want tasks from.",
-            "required": true,
+            "description": "Use if a previous request returned a cursor. Will page through results",
             "style": "form",
             "explode": true,
             "schema": {
@@ -461,7 +485,13 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentPost"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CommentPost"
+                  },
+                  {}
+                ],
+                "contentMediaType": "application/json"
               }
             }
           },
@@ -491,9 +521,10 @@
         "operationId": "CommentsController_getComments",
         "parameters": [
           {
-            "name": "cursor",
+            "name": "taskId",
             "in": "query",
-            "description": "Use if a previous request returned a cursor. Will page through results",
+            "description": "",
+            "required": true,
             "style": "form",
             "explode": true,
             "schema": {
@@ -501,10 +532,9 @@
             }
           },
           {
-            "name": "taskId",
+            "name": "cursor",
             "in": "query",
-            "description": "",
-            "required": true,
+            "description": "Use if a previous request returned a cursor. Will page through results",
             "style": "form",
             "explode": true,
             "schema": {
@@ -576,9 +606,10 @@
         "operationId": "ProjectsController_get",
         "parameters": [
           {
-            "name": "cursor",
+            "name": "workspaceId",
             "in": "query",
-            "description": "Use if a previous request returned a cursor. Will page through results",
+            "description": "",
+            "required": true,
             "style": "form",
             "explode": true,
             "schema": {
@@ -586,10 +617,9 @@
             }
           },
           {
-            "name": "workspaceId",
+            "name": "cursor",
             "in": "query",
-            "description": "",
-            "required": true,
+            "description": "Use if a previous request returned a cursor. Will page through results",
             "style": "form",
             "explode": true,
             "schema": {
@@ -625,7 +655,13 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProjectPost"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectPost"
+                  },
+                  {}
+                ],
+                "contentMediaType": "application/json"
               }
             }
           },
@@ -1057,7 +1093,12 @@
             "type": "string"
           },
           "priority": {
-            "$ref": "#/components/schemas/Priority"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Priority"
+              },
+              {}
+            ]
           }
         }
       },
@@ -1077,7 +1118,12 @@
             "description": "Frequency in which the task should be scheduled. Please carefully read how to construct above."
           },
           "deadlineType": {
-            "$ref": "#/components/schemas/DeadlineType"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeadlineType"
+              },
+              {}
+            ]
           },
           "duration": {
             "oneOf": [
@@ -1119,7 +1165,12 @@
             "type": "string"
           },
           "priority": {
-            "$ref": "#/components/schemas/Priority1"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Priority1"
+              },
+              {}
+            ]
           },
           "assigneeId": {
             "type": "string",
@@ -1213,7 +1264,12 @@
         "type": "object",
         "properties": {
           "workspace": {
-            "$ref": "#/components/schemas/Workspace"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Workspace"
+              },
+              {}
+            ]
           },
           "id": {
             "type": "string"
@@ -1235,16 +1291,36 @@
             ]
           },
           "assignee": {
-            "$ref": "#/components/schemas/User"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              },
+              {}
+            ]
           },
           "project": {
-            "$ref": "#/components/schemas/Project"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Project"
+              },
+              {}
+            ]
           },
           "status": {
-            "$ref": "#/components/schemas/Status"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Status"
+              },
+              {}
+            ]
           },
           "priority": {
-            "$ref": "#/components/schemas/Priority"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Priority"
+              },
+              {}
+            ]
           },
           "labels": {
             "type": "array",
@@ -1413,7 +1489,12 @@
             ]
           },
           "deadlineType": {
-            "$ref": "#/components/schemas/DeadlineType1"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeadlineType1"
+              },
+              {}
+            ]
           },
           "schedule": {
             "type": "string",
@@ -1473,7 +1554,12 @@
             "description": "Input as GitHub Flavored Markdown"
           },
           "priority": {
-            "$ref": "#/components/schemas/Priority"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Priority"
+              },
+              {}
+            ]
           },
           "labels": {
             "type": "array",
@@ -1521,7 +1607,12 @@
             "description": "A duration can be one of the following... \"NONE\", \"REMINDER\", or a integer greater than 0"
           },
           "workspace": {
-            "$ref": "#/components/schemas/Workspace"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Workspace"
+              },
+              {}
+            ]
           },
           "id": {
             "type": "string"
@@ -1537,7 +1628,12 @@
             "contentEncoding": "date-time"
           },
           "deadlineType": {
-            "$ref": "#/components/schemas/DeadlineType1"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeadlineType1"
+              },
+              {}
+            ]
           },
           "parentRecurringTaskId": {
             "type": "string"
@@ -1556,13 +1652,28 @@
             ]
           },
           "project": {
-            "$ref": "#/components/schemas/Project"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Project"
+              },
+              {}
+            ]
           },
           "status": {
-            "$ref": "#/components/schemas/Status"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Status"
+              },
+              {}
+            ]
           },
           "priority": {
-            "$ref": "#/components/schemas/Priority"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Priority"
+              },
+              {}
+            ]
           },
           "labels": {
             "type": "array",
@@ -1657,7 +1768,12 @@
             "description": "Input as GitHub Flavored Markdown"
           },
           "priority": {
-            "$ref": "#/components/schemas/Priority"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Priority"
+              },
+              {}
+            ]
           },
           "labels": {
             "type": "array",
@@ -1859,3 +1975,4 @@
     }
   ]
 }
+
